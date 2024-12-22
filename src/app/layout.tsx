@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: "app",
+    card: "summary",
     title: "SteamLookup",
     description: "Website for looking up Steam profiles",
     creator: "@heapyxyz",
