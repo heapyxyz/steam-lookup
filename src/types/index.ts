@@ -11,7 +11,7 @@ export interface Background {
 export interface Game {
   name: string
   appId: number
-  playtime: number
+  playtime?: number
 }
 
 export interface Profile {

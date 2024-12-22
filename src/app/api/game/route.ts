@@ -16,7 +16,7 @@ export async function GET(request: Request) {
 
   const gameResponse = await gameRequest.json()
 
-  if (gameResponse == undefined)
+  if (!gameResponse)
     return Response.json(
       { message: "Couldn't fetch data about game" },
       { status: 400 }
@@ -25,7 +25,6 @@ export async function GET(request: Request) {
   const game: Game = {
     name: gameResponse[id].data.name,
     appId: Number(id),
-    playtime: 0,
   }
 
   return Response.json(game)
