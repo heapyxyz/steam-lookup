@@ -45,7 +45,7 @@ export function Profile({ id }: { id: string }) {
 
         if (data.games.length > 0) {
           var playtime = 0
-          data.games.forEach((game: Game) => (playtime += game.playtime))
+          data.games.forEach((game: Game) => (playtime += game.playtime ?? 0))
           setPlaytime(Number((playtime / 60).toFixed(1)))
         }
 
