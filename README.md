@@ -1,5 +1,5 @@
 # Introduction
-SteamLookup is a easy-to-use tool for looking up Steam profiles.
+SteamLookup is an easy-to-use tool for looking up Steam profiles.
 
 ## API Endpoints
 - `/api/game?id=<APP_ID>` - Returns game's name and app id.  
