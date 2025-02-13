@@ -36,10 +36,9 @@ export function ResolveForm() {
         value={input}
         onValueChange={(value) => setInput(value)}
         onKeyDown={(e) => {
-          if (e.key == "Enter") {
-            setLoading(true)
-            mutate({ input })
-          }
+          if (e.key != "Enter" || input.trim().length == 0) return
+          setLoading(true)
+          mutate({ input })
         }}
         disabled={isLoading}
       />
@@ -48,6 +47,7 @@ export function ResolveForm() {
         className="text-lg font-black rounded-none rounded-r-lg w-40 bg-white text-black"
         isLoading={isLoading}
         onPress={() => {
+          if (input.trim().length == 0) return
           setLoading(true)
           mutate({ input })
         }}
