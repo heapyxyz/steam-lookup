@@ -1,18 +1,15 @@
 import { Error } from "@/src/components/error"
 import { Profile } from "@/src/components/profile"
+import SteamID from "steamid"
+import * as api from "@/src/lib/steam"
 
 export default async function Page({
   params,
 }: {
   params: Promise<{ id: string }>
 }) {
-  const response = await fetch(`/api/resolve?id=${(await params).id}`)
-  const data = await response.json()
-  if (!data) return <Error message={"Profile not found!"} />
+  const steamID: SteamID | null = await api.resolve((await params).id)
+  if (!steamID) return <Error message={"Profile not found!"} />
 
-  const id = data.steamid64
-
-  if (!id) return <Error message={"Profile not found!"} />
-
-  return <Profile id={id} />
+  return <Profile id={steamID.getSteamID64()} />
 }
