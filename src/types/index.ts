@@ -1,5 +1,6 @@
 export enum BackgroundType {
   Image,
+  TiledImage,
   Video,
 }
 
