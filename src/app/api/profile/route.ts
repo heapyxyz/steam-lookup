@@ -57,6 +57,11 @@ export async function GET(request: Request) {
     profileBackgroundUrl = profileBackgroundUrl
       .replace("background-image: url( '", "")
       .replace("' );", "")
+    if (profileBackgroundUrl.endsWith("repeat;")) {
+      profileBackgroundType = BackgroundType.TiledImage
+      profileBackgroundUrl = profileBackgroundUrl
+        .replace("background-repeat: repeat;", "")
+    }
 
   // If background video was found, use it instead
   var animatedBackgroundDiv = selector(".profile_animated_background").first()

@@ -76,11 +76,17 @@ export function Profile({ id }: { id: string }) {
       <Center
         style={{
           backgroundImage:
-            profile.background.type == BackgroundType.Image
+            profile.background.type == BackgroundType.Image || BackgroundType.TiledImage
               ? `url(${profile.background.url})`
               : "",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
+          backgroundRepeat:
+            profile.background.type == BackgroundType.TiledImage
+              ? "repeat"
+              : "no-repeat",
+          backgroundSize: 
+            profile.background.type == BackgroundType.TiledImage
+              ? "auto"
+              : "cover",
           backgroundPosition: "center center",
         }}
         className="space-y-5"
