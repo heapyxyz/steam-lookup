@@ -1,0 +1,32 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Profile {
+  steamId        String         @id @unique @map("steam_id")
+  backgroundType BackgroundType @default(Image) @map("background_type")
+  backgroundUrl  String         @default("https://steamcommunity-a.akamaihd.net/public/images/profile/2020/bg_dots.png") @map("background_url")
+  level          Int?
+  timeCreated    Int?           @map("time_created")
+  avatarUrl      String         @map("avatar_url")
+  longUrl        String         @map("long_url")
+  shortUrl       String?        @map("short_url")
+  username       String
+  vanity         String?
+  lastUpdated    DateTime       @updatedAt @map("last_updated")
+
+  @@map("profiles")
+}
+
+enum BackgroundType {
+  Image
+  Tiled
+  Video
+
+  @@map("background_type")
+}
