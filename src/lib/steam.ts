@@ -165,11 +165,11 @@ class SteamClient {
       where: { steamId: id64 },
     })
 
-    // If profile is already in db and was last updated within last 24 hours, return the stored profile
+    // If profile is already in db and was last updated within last 30 minutes, return the stored profile
     // Otherwise update the profile and return updated info
     if (
       existingProfile &&
-      existingProfile.lastUpdated.getTime() >= Date.now() - 86400000
+      existingProfile.lastUpdated.getTime() >= Date.now() - 1800000
     )
       return existingProfile
 
