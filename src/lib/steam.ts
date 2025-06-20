@@ -255,9 +255,9 @@ class SteamClient {
       console.log(`SteamLookup ${response.status} ${url}`)
       if (response.status === 200) return response
 
-      // Delay by i * 1000
-      // 1000ms, 2000ms, 3000ms, 4000ms, etc.
-      await new Promise((r) => setTimeout(r, i * 1000))
+      // Delay by 2^i * 100ms + a random delay up to 1000ms
+      const delay = Math.pow(2, i) * 100 + Math.random() * 1000
+      await new Promise((r) => setTimeout(r, delay))
     }
 
     console.log(`SteamLookup failed to fetch ${url} after ${retries} retries`)
