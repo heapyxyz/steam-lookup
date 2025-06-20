@@ -250,23 +250,7 @@ class SteamClient {
   private async fetch(url: string, retries: number = 10): Promise<Response> {
     for (let i = 0; i < retries; i++) {
       const response = await fetch(url, {
-        headers: {
-          // Literally took these from my web browser cuz these 429 errors pmo 🥀
-          // (hope this will help 🙏🙏🙏)
-          accept:
-            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-          "accept-encoding": "gzip, deflate, br, zstd",
-          "accept-language": "en-US,en;q=0.7",
-          "cache-control": "max-age=0",
-          priority: "u=0, i",
-          "sec-fetch-dest": "document",
-          "sec-fetch-mode": "navigate",
-          "sec-fetch-site": "none",
-          "sec-fetch-user": "?1",
-          "sec-gpc": "1",
-          "upgrade-insecure-requests": "1",
-          "user-agent": getRandom(),
-        },
+        headers: { "user-agent": getRandom() },
       })
       console.log(`SteamLookup ${response.status} ${url}`)
       if (response.status === 200) return response
