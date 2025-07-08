@@ -1,7 +1,7 @@
 import { BackgroundType, Profile } from "@prisma/client"
 import SteamID from "steamid"
 import Link from "next/link"
-import Image from "next/image"
+import ExportedImage from "next-image-export-optimizer"
 
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -20,7 +20,7 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
         <Card className="max-w-lg w-full bg-transparent border-0 backdrop-blur-2xl backdrop-brightness-50">
           <CardContent className="text-muted-foreground text-sm text-center flex flex-col items-center gap-2">
             <Link href={profile.longUrl} target="_blank">
-              <Image
+              <ExportedImage
                 className="rounded hover:rounded-xl border-2 border-white/50 hover:border-white transition-all p-1"
                 src={profile.avatarUrl}
                 alt="Avatar"

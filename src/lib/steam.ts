@@ -51,7 +51,7 @@ class SteamClient {
 
   private readonly apiKey: string
   private readonly apiUrlBase = "https://api.steampowered.com"
-  private readonly backgroundUrlBase =
+  private readonly cdnUrlBase =
     "https://cdn.fastly.steamstatic.com/steamcommunity/public/images/"
 
   constructor(apiKey: string) {
@@ -183,6 +183,7 @@ class SteamClient {
     if (response.status !== 200) return existingProfile ?? null
 
     const data = (await response.json()).response.players[0]
+    const animatedAvatar = await this.getProfileAnimatedAvatar(id64)
     const background = await this.getProfileBackground(id64)
     const level = await this.getProfileLevel(id64)
 
@@ -192,7 +193,7 @@ class SteamClient {
       backgroundUrl: background.url,
       level: level,
       timeCreated: data.timecreated,
-      avatarUrl: data.avatarfull,
+      avatarUrl: animatedAvatar ?? data.avatarfull,
       longUrl: `https://steamcommunity.com/profiles/${id64}`,
       shortUrl: null,
       username: data.personaname,
@@ -238,13 +239,28 @@ class SteamClient {
 
     if (data.movie_mp4) {
       background.type = BackgroundType.Video
-      background.url = this.backgroundUrlBase + data.movie_mp4
+      background.url = this.cdnUrlBase + data.movie_mp4
     } else if (data.image_large) {
       if (data.tiled === true) background.type = BackgroundType.Tiled
-      background.url = this.backgroundUrlBase + data.image_large
+      background.url = this.cdnUrlBase + data.image_large
     }
 
     return background
+  }
+
+  async getProfileAnimatedAvatar(id64: string): Promise<string | null> {
+    const type = this.identifyInput(id64)
+    if (type !== InputType.Steam64) return null
+
+    const response = await this.fetch(
+      this.apiUrlBase +
+        `/IPlayerService/GetAnimatedAvatar/v1/?key=${this.apiKey}&steamid=${id64}`
+    )
+
+    if (response.status !== 200) return null
+
+    const data = (await response.json()).response.avatar
+    return data.image_small ? this.cdnUrlBase + data.image_small : null
   }
 
   private async fetch(url: string, retries: number = 10): Promise<Response> {
