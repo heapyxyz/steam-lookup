@@ -176,8 +176,7 @@ class SteamClient {
     if (existingProfile) await this.updateOrCreate(existingProfile)
 
     const response = await this.fetch(
-      this.apiUrlBase +
-        `/ISteamUser/GetPlayerSummaries/v2/?key=${this.apiKey}&steamids=${id64}`
+      `/ISteamUser/GetPlayerSummaries/v2/?key=${this.apiKey}&steamids=${id64}`
     )
 
     if (response.status !== 200) return existingProfile ?? null
@@ -219,8 +218,7 @@ class SteamClient {
     if (type !== InputType.Steam64) return background
 
     const response = await this.fetch(
-      this.apiUrlBase +
-        `/IPlayerService/GetProfileBackground/v1/?key=${this.apiKey}&steamid=${id64}`
+      `/IPlayerService/GetProfileBackground/v1/?key=${this.apiKey}&steamid=${id64}`
     )
 
     if (response.status !== 200) return background
@@ -240,8 +238,7 @@ class SteamClient {
 
   async getLevel(id64: string): Promise<number | null> {
     const response = await this.fetch(
-      this.apiUrlBase +
-        `/IPlayerService/GetSteamLevel/v1/?key=${this.apiKey}&steamid=${id64}`
+      `/IPlayerService/GetSteamLevel/v1/?key=${this.apiKey}&steamid=${id64}`
     )
 
     if (response.status !== 200) return null
@@ -255,8 +252,7 @@ class SteamClient {
     if (type !== InputType.Steam64) return null
 
     const response = await this.fetch(
-      this.apiUrlBase +
-        `/IPlayerService/GetAnimatedAvatar/v1/?key=${this.apiKey}&steamid=${id64}`
+      `/IPlayerService/GetAnimatedAvatar/v1/?key=${this.apiKey}&steamid=${id64}`
     )
 
     if (response.status !== 200) return null
@@ -270,8 +266,7 @@ class SteamClient {
     if (type !== InputType.Steam64) return null
 
     const response = await this.fetch(
-      this.apiUrlBase +
-        `/IPlayerService/GetAvatarFrame/v1/?key=${this.apiKey}&steamid=${id64}`
+      `/IPlayerService/GetAvatarFrame/v1/?key=${this.apiKey}&steamid=${id64}`
     )
 
     if (response.status !== 200) return null
@@ -280,12 +275,13 @@ class SteamClient {
     return data.image_small ? this.cdnUrlBase + data.image_small : null
   }
 
-  private async fetch(url: string, retries: number = 10): Promise<Response> {
+  private async fetch(route: string, retries: number = 10): Promise<Response> {
+    const url = new URL(route, this.apiUrlBase)
     for (let i = 0; i < retries; i++) {
       const response = await fetch(url, {
         headers: { "user-agent": getRandom() },
       })
-      console.log(`SteamLookup ${response.status} ${url}`)
+      console.log(`SteamLookup ${response.status} ${route}`)
       if (response.status === 200) return response
 
       // Delay by 2^i * 100ms + a random delay up to 1000ms
@@ -293,7 +289,7 @@ class SteamClient {
       await new Promise((r) => setTimeout(r, delay))
     }
 
-    console.log(`SteamLookup failed to fetch ${url} after ${retries} retries`)
+    console.log(`SteamLookup failed to fetch ${route} after ${retries} retries`)
     return new Response(null, {
       status: 418,
       statusText: `Fetch failed after ${retries} retries`,
