@@ -183,9 +183,9 @@ class SteamClient {
     if (response.status !== 200) return existingProfile ?? null
 
     const data = (await response.json()).response.players[0]
-    const animatedAvatar = await this.getProfileAnimatedAvatar(id64)
-    const background = await this.getProfileBackground(id64)
-    const level = await this.getProfileLevel(id64)
+    const animatedAvatar = await this.getAnimatedAvatar(id64)
+    const background = await this.getBackground(id64)
+    const level = await this.getLevel(id64)
 
     const profile: Profile = {
       steamId: id64,
@@ -207,7 +207,7 @@ class SteamClient {
     return await this.updateOrCreate(profile)
   }
 
-  async getProfileLevel(id64: string): Promise<number | null> {
+  async getLevel(id64: string): Promise<number | null> {
     const response = await this.fetch(
       this.apiUrlBase +
         `/IPlayerService/GetSteamLevel/v1/?key=${this.apiKey}&steamid=${id64}`
@@ -219,7 +219,7 @@ class SteamClient {
     return data.player_level
   }
 
-  async getProfileBackground(id64: string): Promise<Background> {
+  async getBackground(id64: string): Promise<Background> {
     const background: Background = {
       type: BackgroundType.Image,
       url: "https://steamcommunity-a.akamaihd.net/public/images/profile/2020/bg_dots.png",
@@ -248,7 +248,7 @@ class SteamClient {
     return background
   }
 
-  async getProfileAnimatedAvatar(id64: string): Promise<string | null> {
+  async getAnimatedAvatar(id64: string): Promise<string | null> {
     const type = this.identifyInput(id64)
     if (type !== InputType.Steam64) return null
 
