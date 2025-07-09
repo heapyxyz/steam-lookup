@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@daveyplate/next-rate-limit": "^2.0.1",
-    "@prisma/client": "^6.10.1",
+    "@prisma/client": "^6.11.1",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.7",
