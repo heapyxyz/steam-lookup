@@ -19,9 +19,27 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
       <Center>
         <Card className="max-w-lg w-full bg-transparent border-0 backdrop-blur-2xl backdrop-brightness-50">
           <CardContent className="text-muted-foreground text-sm text-center flex flex-col items-center gap-2">
-            <Link href={profile.longUrl} target="_blank">
+            <Link
+              href={profile.longUrl}
+              target="_blank"
+              className={profile.avatarFrameUrl ? "py-1" : undefined}
+            >
+              {profile.avatarFrameUrl && (
+                <ExportedImage
+                  className="absolute scale-125"
+                  src={profile.avatarFrameUrl}
+                  alt="Avatar Frame"
+                  height={96}
+                  width={96}
+                />
+              )}
+
               <ExportedImage
-                className="rounded hover:rounded-xl border-2 border-white/50 hover:border-white transition-all p-1"
+                className={
+                  profile.avatarFrameUrl
+                    ? undefined
+                    : "rounded hover:rounded-xl border-2 border-white/50 hover:border-white transition-all p-1"
+                }
                 src={profile.avatarUrl}
                 alt="Avatar"
                 height={96}

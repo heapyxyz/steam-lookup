@@ -14,6 +14,7 @@ model Profile {
   level          Int?
   timeCreated    Int?           @map("time_created")
   avatarUrl      String         @map("avatar_url")
+  avatarFrameUrl String?        @map("avatar_frame_url")
   longUrl        String         @map("long_url")
   shortUrl       String?        @map("short_url")
   username       String

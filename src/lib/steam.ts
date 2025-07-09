@@ -183,9 +183,10 @@ class SteamClient {
     if (response.status !== 200) return existingProfile ?? null
 
     const data = (await response.json()).response.players[0]
-    const animatedAvatar = await this.getAnimatedAvatar(id64)
     const background = await this.getBackground(id64)
     const level = await this.getLevel(id64)
+    const animatedAvatar = await this.getAnimatedAvatar(id64)
+    const avatarFrame = await this.getAvatarFrame(id64)
 
     const profile: Profile = {
       steamId: id64,
@@ -194,6 +195,7 @@ class SteamClient {
       level: level,
       timeCreated: data.timecreated,
       avatarUrl: animatedAvatar ?? data.avatarfull,
+      avatarFrameUrl: avatarFrame,
       longUrl: `https://steamcommunity.com/profiles/${id64}`,
       shortUrl: null,
       username: data.personaname,
@@ -205,18 +207,6 @@ class SteamClient {
       profile.vanity = data.profileurl.match(this.reProfileUrlVanity)![1]
 
     return await this.updateOrCreate(profile)
-  }
-
-  async getLevel(id64: string): Promise<number | null> {
-    const response = await this.fetch(
-      this.apiUrlBase +
-        `/IPlayerService/GetSteamLevel/v1/?key=${this.apiKey}&steamid=${id64}`
-    )
-
-    if (response.status !== 200) return null
-
-    const data = (await response.json()).response
-    return data.player_level
   }
 
   async getBackground(id64: string): Promise<Background> {
@@ -248,6 +238,18 @@ class SteamClient {
     return background
   }
 
+  async getLevel(id64: string): Promise<number | null> {
+    const response = await this.fetch(
+      this.apiUrlBase +
+        `/IPlayerService/GetSteamLevel/v1/?key=${this.apiKey}&steamid=${id64}`
+    )
+
+    if (response.status !== 200) return null
+
+    const data = (await response.json()).response
+    return data.player_level
+  }
+
   async getAnimatedAvatar(id64: string): Promise<string | null> {
     const type = this.identifyInput(id64)
     if (type !== InputType.Steam64) return null
@@ -260,6 +262,21 @@ class SteamClient {
     if (response.status !== 200) return null
 
     const data = (await response.json()).response.avatar
+    return data.image_small ? this.cdnUrlBase + data.image_small : null
+  }
+
+  async getAvatarFrame(id64: string): Promise<string | null> {
+    const type = this.identifyInput(id64)
+    if (type !== InputType.Steam64) return null
+
+    const response = await this.fetch(
+      this.apiUrlBase +
+        `/IPlayerService/GetAvatarFrame/v1/?key=${this.apiKey}&steamid=${id64}`
+    )
+
+    if (response.status !== 200) return null
+
+    const data = (await response.json()).response.avatar_frame
     return data.image_small ? this.cdnUrlBase + data.image_small : null
   }
 
