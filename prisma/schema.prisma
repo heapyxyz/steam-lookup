@@ -9,8 +9,8 @@ generator client {
 
 model Profile {
   steamId          String         @id @unique @map("steam_id")
-  backgroundType   BackgroundType @map("background_type")
-  backgroundUrl    String         @map("background_url")
+  backgroundType   BackgroundType @default(Image) @map("background_type")
+  backgroundUrl    String         @default("https://steamcommunity-a.akamaihd.net/public/images/profile/2020/bg_dots.png") @map("background_url")
   level            Int?
   timeCreated      Int?           @map("time_created")
   avatarUrl        String         @map("avatar_url")
@@ -19,11 +19,11 @@ model Profile {
   shortUrl         String?        @map("short_url")
   username         String
   vanity           String?
-  communityBanned  Boolean        @map("community_banned")
-  tradeBanned      Boolean        @map("trade_banned")
-  vacBans          Int            @map("vac_bans")
-  gameBans         Int            @map("game_bans")
-  daysSinceLastBan Int            @map("days_since_last_ban")
+  communityBanned  Boolean        @default(false) @map("community_banned")
+  tradeBanned      Boolean        @default(false) @map("trade_banned")
+  vacBans          Int            @default(0) @map("vac_bans")
+  gameBans         Int            @default(0) @map("game_bans")
+  daysSinceLastBan Int            @default(0) @map("days_since_last_ban")
   lastUpdated      DateTime       @updatedAt @map("last_updated")
 
   @@map("profiles")
