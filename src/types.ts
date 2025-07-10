@@ -30,3 +30,8 @@ export interface Bans {
   gameBans: number
   daysSinceLastBan: number
 }
+
+export interface Game {
+  appId: number
+  playtime: number
+}

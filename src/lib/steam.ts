@@ -2,10 +2,10 @@ import "server-only"
 
 import SteamID from "steamid"
 import { BackgroundType, Profile } from "@prisma/client"
+import { getRandom } from "random-useragent"
 
 import { prisma } from "./prisma"
-import { getRandom } from "random-useragent"
-import { Background, Bans, InputType } from "@/types"
+import { Background, Bans, Game, InputType } from "@/types"
 
 class SteamClient {
   private readonly reProfileUrlBase = String.raw`(?:(?:https?)?:\/\/)?(?:www.)?steamcommunity.com`
@@ -58,7 +58,7 @@ class SteamClient {
 
   private async vanityToId64(input: string): Promise<string | null> {
     const response = await this.fetch(
-      `${this.apiUrlBase}/ISteamUser/ResolveVanityURL/v1/?key=${this.apiKey}&vanityurl=${input}&url_type=1`
+      `/ISteamUser/ResolveVanityURL/v1/?key=${this.apiKey}&vanityurl=${input}&url_type=1`
     )
 
     if (response.status !== 200) return null
@@ -169,6 +169,7 @@ class SteamClient {
     const animatedAvatar = await this.getAnimatedAvatar(id64)
     const avatarFrame = await this.getAvatarFrame(id64)
     const bans = await this.getBans(id64)
+    const games = await this.getGames(id64)
 
     const profile: Profile = {
       steamId: id64,
@@ -187,6 +188,8 @@ class SteamClient {
       vacBans: bans.vacBans,
       gameBans: bans.gameBans,
       daysSinceLastBan: bans.daysSinceLastBan,
+      gameCount: games.gameCount,
+      playtime: games.games.reduce((acc, game) => acc + game.playtime, 0),
       lastUpdated: new Date(Date.now()),
     }
 
@@ -292,6 +295,32 @@ class SteamClient {
     bans.daysSinceLastBan = data.DaysSinceLastBan
 
     return bans
+  }
+
+  async getGames(id64: string): Promise<{ gameCount: number; games: Game[] }> {
+    const games: Game[] = []
+
+    const type = this.identifyInput(id64)
+    if (type !== InputType.Steam64) return { gameCount: 0, games }
+
+    const response = await this.fetch(
+      `/IPlayerService/GetOwnedGames/v1/?key=${this.apiKey}&steamid=${id64}&include_played_free_games=true&include_free_sub=true`
+    )
+
+    if (response.status !== 200) return { gameCount: 0, games }
+
+    const data = (await response.json()).response
+    const gameCount = data.game_count
+    if (!gameCount || !data.games) return { gameCount: 0, games }
+
+    for (const game of data.games) {
+      games.push({
+        appId: game.appid,
+        playtime: game.playtime_forever,
+      })
+    }
+
+    return { gameCount, games }
   }
 
   private async fetch(route: string, retries: number = 10): Promise<Response> {

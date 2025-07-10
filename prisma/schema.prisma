@@ -24,6 +24,8 @@ model Profile {
   vacBans          Int            @default(0) @map("vac_bans")
   gameBans         Int            @default(0) @map("game_bans")
   daysSinceLastBan Int            @default(0) @map("days_since_last_ban")
+  gameCount        Int            @default(0) @map("game_count")
+  playtime         Int            @default(0) @map("playtime")
   lastUpdated      DateTime       @updatedAt @map("last_updated")
 
   @@map("profiles")

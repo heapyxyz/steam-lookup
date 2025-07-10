@@ -41,8 +41,11 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
             <ProfileBody
               vanity={profile.vanity}
               timeCreated={profile.timeCreated}
-              steamId={new SteamID(profile.steamId)}
+              gameCount={profile.gameCount}
+              playtime={profile.playtime}
             />
+
+            <ProfileSteamIds steamId={new SteamID(profile.steamId)} />
           </CardContent>
         </Card>
       </Center>
@@ -199,14 +202,16 @@ function ProfileBans({
 function ProfileBody({
   vanity,
   timeCreated,
-  steamId,
+  gameCount,
+  playtime,
 }: {
   vanity: string | null
   timeCreated: number | null
-  steamId: SteamID
+  gameCount: number
+  playtime: number
 }) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="grid grid-cols-2 grid-center-last gap-y-1 gap-x-4">
       {vanity && (
         <div>
           <p className="text-foreground">Vanity</p>
@@ -223,12 +228,32 @@ function ProfileBody({
         </div>
       )}
 
-      <div>
-        <p className="text-foreground">Steam IDs</p>
-        <p className="select-all">{steamId.getSteam2RenderedID(true)}</p>
-        <p className="select-all">{steamId.getSteam3RenderedID()}</p>
-        <p className="select-all">{steamId.getSteamID64()}</p>
-      </div>
+      {gameCount > 0 && (
+        <div>
+          <p className="text-foreground">Games Owned</p>
+          <p className="select-text">{gameCount}</p>
+        </div>
+      )}
+
+      {playtime > 0 && (
+        <div>
+          <p className="text-foreground">Playtime</p>
+          <p className="select-text">
+            {Math.round((playtime * 10) / 60) / 10} Hours
+          </p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ProfileSteamIds({ steamId }: { steamId: SteamID }) {
+  return (
+    <div>
+      <p className="text-foreground">Steam IDs</p>
+      <p className="select-all">{steamId.getSteam2RenderedID(true)}</p>
+      <p className="select-all">{steamId.getSteam3RenderedID()}</p>
+      <p className="select-all">{steamId.getSteamID64()}</p>
     </div>
   )
 }
