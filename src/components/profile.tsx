@@ -10,7 +10,9 @@ import "./profile.css"
 import { Bans } from "@/types"
 
 export default function ProfileCard({ profile }: { profile: Profile | null }) {
-  return profile ? (
+  if (!profile) return <ProfileNotFound />
+
+  return (
     <>
       <ProfileBackground
         type={profile.backgroundType}
@@ -20,43 +22,13 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
       <Center>
         <Card className="max-w-lg w-full bg-transparent border-0 backdrop-blur-2xl backdrop-brightness-50">
           <CardContent className="text-muted-foreground text-sm text-center flex flex-col items-center gap-2">
-            <Link
+            <ProfileAvatar
               href={profile.longUrl}
-              target="_blank"
-              className={profile.avatarFrameUrl ? "py-1" : undefined}
-            >
-              {profile.avatarFrameUrl && (
-                <ExportedImage
-                  className="absolute scale-125"
-                  src={profile.avatarFrameUrl}
-                  alt="Avatar Frame"
-                  height={96}
-                  width={96}
-                />
-              )}
+              avatarUrl={profile.avatarUrl}
+              avatarFrameUrl={profile.avatarFrameUrl}
+            />
 
-              <ExportedImage
-                className={
-                  profile.avatarFrameUrl
-                    ? undefined
-                    : "rounded hover:rounded-xl border-2 border-white/50 hover:border-white transition-all p-1"
-                }
-                src={profile.avatarUrl}
-                alt="Avatar"
-                height={96}
-                width={96}
-              />
-            </Link>
-
-            <div className="flex gap-2 items-center">
-              <p className="text-foreground text-xl max-w-[256px] truncate">
-                {profile.username}
-              </p>
-
-              {profile.level ? (
-                <ProfileLevel level={profile.level} />
-              ) : undefined}
-            </div>
+            <ProfileUser username={profile.username} level={profile.level} />
 
             <ProfileBans
               communityBanned={profile.communityBanned}
@@ -66,31 +38,15 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
               daysSinceLastBan={profile.daysSinceLastBan}
             />
 
-            <div className="flex flex-col gap-1">
-              {profile.vanity ? (
-                <div>
-                  <p className="text-foreground">Vanity</p>
-                  <p className="select-text">{profile.vanity}</p>
-                </div>
-              ) : undefined}
-
-              {profile.timeCreated ? (
-                <div>
-                  <p className="text-foreground">Created On</p>
-                  <p className="select-text">
-                    {new Date(profile.timeCreated * 1000).toLocaleDateString()}
-                  </p>
-                </div>
-              ) : undefined}
-
-              <ProfileSteamIds input={profile.steamId} />
-            </div>
+            <ProfileBody
+              vanity={profile.vanity}
+              timeCreated={profile.timeCreated}
+              steamId={new SteamID(profile.steamId)}
+            />
           </CardContent>
         </Card>
       </Center>
     </>
-  ) : (
-    <ProfileNotFound />
   )
 }
 
@@ -123,6 +79,64 @@ function ProfileBackground({
   )
 }
 
+function ProfileAvatar({
+  href,
+  avatarUrl,
+  avatarFrameUrl,
+}: {
+  href: string
+  avatarUrl: string
+  avatarFrameUrl: string | null
+}) {
+  return (
+    <Link
+      href={href}
+      target="_blank"
+      className={avatarFrameUrl ? "py-1" : undefined}
+    >
+      {avatarFrameUrl && (
+        <ExportedImage
+          className="absolute scale-125"
+          src={avatarFrameUrl}
+          alt="Avatar Frame"
+          height={96}
+          width={96}
+        />
+      )}
+
+      <ExportedImage
+        className={
+          avatarFrameUrl
+            ? undefined
+            : "rounded hover:rounded-xl border-2 border-white/50 hover:border-white transition-all p-1"
+        }
+        src={avatarUrl}
+        alt="Avatar"
+        height={96}
+        width={96}
+      />
+    </Link>
+  )
+}
+
+function ProfileUser({
+  username,
+  level,
+}: {
+  username: string
+  level: number | null
+}) {
+  return (
+    <div className="flex gap-2 items-center">
+      <p className="text-foreground text-xl max-w-[256px] truncate">
+        {username}
+      </p>
+
+      {level && <ProfileLevel level={level} />}
+    </div>
+  )
+}
+
 function ProfileLevel({ level }: { level: number }) {
   if (level >= 6200) level = 0
 
@@ -140,32 +154,6 @@ function ProfileLevel({ level }: { level: number }) {
   return (
     <div className={`friendPlayerLevel ${getLevelClass(level)}`}>
       <span className="profileLevelNum text-foreground">{level}</span>
-    </div>
-  )
-}
-
-function ProfileNotFound() {
-  return (
-    <Center>
-      <h2 className="text-2xl font-bold">Not found!</h2>
-      <p className="text-sm text-muted-foreground text-center">
-        Profile does not exist or an error has occurred.
-        <br />
-        Please try again later.
-      </p>
-    </Center>
-  )
-}
-
-function ProfileSteamIds({ input }: { input: string }) {
-  const steamId = new SteamID(input)
-
-  return (
-    <div>
-      <p className="text-foreground">Steam IDs</p>
-      <p className="select-all">{steamId.getSteam2RenderedID(true)}</p>
-      <p className="select-all">{steamId.getSteam3RenderedID()}</p>
-      <p className="select-all">{steamId.getSteamID64()}</p>
     </div>
   )
 }
@@ -205,5 +193,55 @@ function ProfileBans({
         )}
       </div>
     )
+  )
+}
+
+function ProfileBody({
+  vanity,
+  timeCreated,
+  steamId,
+}: {
+  vanity: string | null
+  timeCreated: number | null
+  steamId: SteamID
+}) {
+  return (
+    <div className="flex flex-col gap-1">
+      {vanity && (
+        <div>
+          <p className="text-foreground">Vanity</p>
+          <p className="select-text">{vanity}</p>
+        </div>
+      )}
+
+      {timeCreated && (
+        <div>
+          <p className="text-foreground">Created On</p>
+          <p className="select-text">
+            {new Date(timeCreated * 1000).toLocaleDateString()}
+          </p>
+        </div>
+      )}
+
+      <div>
+        <p className="text-foreground">Steam IDs</p>
+        <p className="select-all">{steamId.getSteam2RenderedID(true)}</p>
+        <p className="select-all">{steamId.getSteam3RenderedID()}</p>
+        <p className="select-all">{steamId.getSteamID64()}</p>
+      </div>
+    </div>
+  )
+}
+
+function ProfileNotFound() {
+  return (
+    <Center>
+      <h2 className="text-2xl font-bold">Not found!</h2>
+      <p className="text-sm text-muted-foreground text-center">
+        Profile does not exist or an error has occurred.
+        <br />
+        Please try again later.
+      </p>
+    </Center>
   )
 }
