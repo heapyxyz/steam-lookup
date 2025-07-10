@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import Center from "./center"
 import "./profile.css"
+import { Bans } from "@/types"
 
 export default function ProfileCard({ profile }: { profile: Profile | null }) {
   return profile ? (
@@ -56,6 +57,14 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
                 <ProfileLevel level={profile.level} />
               ) : undefined}
             </div>
+
+            <ProfileBans
+              communityBanned={profile.communityBanned}
+              tradeBanned={profile.tradeBanned}
+              vacBans={profile.vacBans}
+              gameBans={profile.gameBans}
+              daysSinceLastBan={profile.daysSinceLastBan}
+            />
 
             <div className="flex flex-col gap-1">
               {profile.vanity ? (
@@ -158,5 +167,43 @@ function ProfileSteamIds({ input }: { input: string }) {
       <p className="select-all">{steamId.getSteam3RenderedID()}</p>
       <p className="select-all">{steamId.getSteamID64()}</p>
     </div>
+  )
+}
+
+function ProfileBans({
+  communityBanned,
+  tradeBanned,
+  vacBans,
+  gameBans,
+  daysSinceLastBan,
+}: Bans) {
+  return (
+    (communityBanned || tradeBanned || vacBans > 0 || gameBans > 0) && (
+      <div className="flex flex-col text-red-500">
+        {communityBanned && <p>Community Banned</p>}
+        {tradeBanned && <p>Trade Banned</p>}
+
+        {vacBans > 0 && (
+          <p>
+            {gameBans} VAC {gameBans === 1 ? "Ban" : "Bans"}
+          </p>
+        )}
+
+        {gameBans > 0 && (
+          <p>
+            {gameBans} Game {gameBans === 1 ? "Ban" : "Bans"}
+          </p>
+        )}
+
+        {daysSinceLastBan !== 0 && (
+          <p>
+            {daysSinceLastBan}{" "}
+            {daysSinceLastBan === 1
+              ? "Day Since Last Ban"
+              : "Days Since Last Ban"}
+          </p>
+        )}
+      </div>
+    )
   )
 }

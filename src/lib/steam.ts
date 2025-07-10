@@ -5,25 +5,7 @@ import { BackgroundType, Profile } from "@prisma/client"
 
 import { prisma } from "./prisma"
 import { getRandom } from "random-useragent"
-
-enum InputType {
-  None,
-  ProfileUrl64,
-  ProfileUrl3,
-  ProfileUrlVanity,
-  UserUrl,
-  Steam64,
-  Steam2,
-  Steam3,
-  Steam3NB,
-  User,
-  Vanity,
-}
-
-interface Background {
-  type: BackgroundType
-  url: string
-}
+import { Background, Bans, InputType } from "@/types"
 
 class SteamClient {
   private readonly reProfileUrlBase = String.raw`(?:(?:https?)?:\/\/)?(?:www.)?steamcommunity.com`
@@ -186,6 +168,7 @@ class SteamClient {
     const level = await this.getLevel(id64)
     const animatedAvatar = await this.getAnimatedAvatar(id64)
     const avatarFrame = await this.getAvatarFrame(id64)
+    const bans = await this.getBans(id64)
 
     const profile: Profile = {
       steamId: id64,
@@ -199,6 +182,11 @@ class SteamClient {
       shortUrl: null,
       username: data.personaname,
       vanity: null,
+      communityBanned: bans.communityBanned,
+      tradeBanned: bans.tradeBanned,
+      vacBans: bans.vacBans,
+      gameBans: bans.gameBans,
+      daysSinceLastBan: bans.daysSinceLastBan,
       lastUpdated: new Date(Date.now()),
     }
 
@@ -273,6 +261,37 @@ class SteamClient {
 
     const data = (await response.json()).response.avatar_frame
     return data.image_small ? this.cdnUrlBase + data.image_small : null
+  }
+
+  async getBans(id64: string): Promise<Bans> {
+    const bans: Bans = {
+      communityBanned: false,
+      tradeBanned: false,
+      vacBans: 0,
+      gameBans: 0,
+      daysSinceLastBan: 0,
+    }
+
+    const type = this.identifyInput(id64)
+    if (type !== InputType.Steam64) return bans
+
+    const response = await this.fetch(
+      `/ISteamUser/GetPlayerBans/v1/?key=${this.apiKey}&steamids=${id64}`
+    )
+
+    if (response.status !== 200) return bans
+
+    const data = (await response.json()).players[0]
+    if (!data) return bans
+
+    bans.communityBanned = data.CommunityBanned
+    bans.tradeBanned =
+      data.EconomyBan === "banned" || data.EconomyBan !== "none"
+    bans.vacBans = data.NumberOfVACBans
+    bans.gameBans = data.NumberOfGameBans
+    bans.daysSinceLastBan = data.DaysSinceLastBan
+
+    return bans
   }
 
   private async fetch(route: string, retries: number = 10): Promise<Response> {
