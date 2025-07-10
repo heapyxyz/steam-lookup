@@ -18,7 +18,7 @@ export default async function Profile({
     <>
       <FixedElement
         position="top"
-        className="max-md:p-4 py-4 max-w-lg w-full mx-auto"
+        className="max-md:p-4 py-4 max-w-lg w-full mx-auto z-1"
       >
         <div
           className={cn(
