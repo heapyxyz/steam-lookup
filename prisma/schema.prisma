@@ -1,0 +1,40 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Profile {
+  steamId          String         @id @unique @map("steam_id")
+  backgroundType   BackgroundType @default(Image) @map("background_type")
+  backgroundUrl    String         @default("https://steamcommunity-a.akamaihd.net/public/images/profile/2020/bg_dots.png") @map("background_url")
+  level            Int?
+  timeCreated      Int?           @map("time_created")
+  avatarUrl        String         @map("avatar_url")
+  avatarFrameUrl   String?        @map("avatar_frame_url")
+  longUrl          String         @map("long_url")
+  shortUrl         String?        @map("short_url")
+  username         String
+  vanity           String?
+  communityBanned  Boolean        @default(false) @map("community_banned")
+  tradeBanned      Boolean        @default(false) @map("trade_banned")
+  vacBans          Int            @default(0) @map("vac_bans")
+  gameBans         Int            @default(0) @map("game_bans")
+  daysSinceLastBan Int            @default(0) @map("days_since_last_ban")
+  gameCount        Int            @default(0) @map("game_count")
+  playtime         Int            @default(0) @map("playtime")
+  lastUpdated      DateTime       @updatedAt @map("last_updated")
+
+  @@map("profiles")
+}
+
+enum BackgroundType {
+  Image
+  Tiled
+  Video
+
+  @@map("background_type")
+}

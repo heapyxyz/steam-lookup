@@ -1,25 +1,37 @@
-# Introduction
-SteamLookup is an easy-to-use tool for looking up Steam profiles.
+# steam-lookup
+`steam-lookup` is an easy-to-use website that lets you lookup Steam profiles.
 
-## API Endpoints
-- `/api/game?id=<APP_ID>` - Returns game's name and app id.  
-- `/api/profile?id=<STEAMID64>` - Returns lots of information about profile.  
-- `/api/resolve?id=<URL_OR_STEAM_ID>` - Resolves URL/Converts id to SteamID64.
+## Requriements
+- Node.js 18.18 or later (from [Next.js docs](https://nextjs.org/docs/app/getting-started/installation#system-requirements))
 
-## Usage (Development)
-**Rename `.env.example` to `.env` and configure it first!**
-```
-npm install
-npm run dev
-```
+## Usage
+1. **Install NodeJS:**
+    - [Windows/macOS](https://nodejs.org/en/download/current)
+    - [Linux](https://nodesource.com/products/distributions)
 
-## Usage (Production)
-**Rename `.env.example` to `.env` and configure it first!**  
+2. **Clone and Open the Project:**
+    ```bash
+    git clone https://github.com/heapyxyz/steam-lookup
+    cd steam-lookup
+    ```
+
+3. **Create Environment File:**  
+    Rename `.env.example` to `.env` and configure it.
+
+4. **Install Dependencies:**
+    ```bash
+    npm i
+    ```
+
+5. **Build the Project:**
+    ```bash
+    npm run build
+    ```
+
+6. **Start the Project:**
+    ```bash
+    npm run start
+    ```
+
 > [!NOTE]
-> By default `npm run start` hosts the website with `0.0.0.0` IP and `80` port.  
-> If you want to use a different IP/port - head to [package.json](./package.json) and edit `-H 0.0.0.0` to `-H <IP>` and `-p 80` to `-p <PORT>`.
-```
-npm install --production
-npm run build
-npm run start
-```
+> If you want to use a different IP or port, head to the `package.json` file and add `-H <IP> -p <PORT>` arguments to the `next start` command.

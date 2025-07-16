@@ -1,26 +1,13 @@
-import "@/src/styles/globals.css"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import { Suspense } from "react"
-import { Loading } from "@/src/components/loading"
-import { Providers } from "./providers"
-import { Navigation } from "../components/navigation"
 
-const inter = Inter({
-  weight: ["500", "700", "900"],
-  subsets: ["latin"],
-})
-
-export const viewport = {
-  width: "device-width",
-  initialScale: 0.75,
-  maximumScale: 5,
-  userScalable: 1,
-}
+import "./globals.css"
+import Providers from "@/app/providers"
+import { Toaster } from "@/components/ui/sonner"
+import Footer from "@/components/footer"
 
 export const metadata: Metadata = {
   title: "SteamLookup",
-  description: "Website for looking up Steam profiles",
+  description: "The easiest way to lookup Steam profiles.",
   generator: "Next.js",
   applicationName: "SteamLookup",
   authors: [{ name: "heapy", url: "https://heapy.xyz" }],
@@ -68,28 +55,29 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary",
     title: "SteamLookup",
-    description: "Website for looking up Steam profiles",
+    description: "An easy-to-use website that lets you lookup Steam profiles.",
     creator: "@heapyxyz",
     images: {
       url: "https://heapy.xyz/icon-dark.png",
-      alt: "SteamLookup Logo",
+      alt: "Logo",
     },
   },
 }
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className + " select-none"}>
+      <body className="antialiased select-none">
         <Providers>
-          <Suspense fallback={<Loading />}>
-            <Navigation />
+          <main className="min-h-dvh max-w-5xl container mx-auto p-4 flex flex-col">
             {children}
-          </Suspense>
+            <Toaster position="bottom-right" visibleToasts={1} />
+            <Footer />
+          </main>
         </Providers>
       </body>
     </html>

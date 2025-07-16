@@ -1,45 +1,89 @@
-"use client"
-
-import Image from "next/image"
-import React from "react"
-import { Center } from "@/src/components/center"
-import { ResolveForm } from "@/src/components/resolve-form"
+import { GithubIcon } from "lucide-react"
 import Link from "next/link"
+import ExportedImage from "next-image-export-optimizer"
 
-export default function Page() {
+import Center from "@/components/center"
+import SearchForm from "@/components/search-form"
+import { buttonVariants } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+
+export default function Home() {
   return (
-    <>
-      <Center
-        style={{
-          backgroundImage:
-            "url(https://steamcommunity-a.akamaihd.net/public/images/profile/2020/bg_dots.png)",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center center",
-        }}
-      >
-        <div className="flex flex-row items-center space-x-3 drop-shadow-background">
-          <Image src="/icon-dark.png" width={96} height={96} alt="Logo" />
+    <Center>
+      <Card className="max-w-lg w-full">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <ExportedImage
+              src="/icon-dark.png"
+              alt="Logo"
+              width={24}
+              height={24}
+            />
+            SteamLookup
+          </CardTitle>
 
-          <div>
-            <p className="font-black text-5xl leading-none">SteamLookup</p>
+          <CardDescription>
+            The easiest way to lookup Steam profiles.
+          </CardDescription>
+        </CardHeader>
 
-            <div className="flex flex-row space-x-1 font-bold">
-              <p>Made by</p>
+        <CardContent className="text-muted-foreground text-sm">
+          <b>Supported Inputs</b>
 
-              <Link
-                href="https://github.com/heapyxyz"
-                target="_blank"
-                className="transition-opacity opacity-60 hover:opacity-90"
-              >
-                heapy
-              </Link>
-            </div>
-          </div>
-        </div>
+          <ul>
+            <li>All SteamID variants, for example:</li>
+            <ul>
+              <li>76561198875567402</li>
+              <li>STEAM_1:0:457650837</li>
+              <div className="max-md:hidden">
+                <li>[U:1:915301674]</li>
+                <li>U:1:915301674</li>
+              </div>
+            </ul>
 
-        <ResolveForm />
-      </Center>
-    </>
+            <li>Custom IDs, for example:</li>
+            <ul>
+              <li>heapyxyz</li>
+              <li>gaben</li>
+              <div className="max-md:hidden">
+                <li>fjmv-jhdp</li>
+              </div>
+            </ul>
+
+            <li>Short and long URLs, for example:</li>
+            <ul>
+              <div className="max-md:hidden">
+                <li>https://.../profiles/76561198875567402</li>
+                <li>https://.../id/heapyxyz</li>
+              </div>
+              <li>https://s.team/p/fjmv-jhdp</li>
+            </ul>
+          </ul>
+        </CardContent>
+
+        <CardFooter className="flex-col gap-2">
+          <SearchForm />
+
+          <Link
+            href="https://github.com/heapyxyz/steam-lookup"
+            target="_blank"
+            className={buttonVariants({
+              variant: "outline",
+              className: "w-full",
+            })}
+          >
+            <GithubIcon />
+            GitHub
+          </Link>
+        </CardFooter>
+      </Card>
+    </Center>
   )
 }
