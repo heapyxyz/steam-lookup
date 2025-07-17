@@ -1,7 +1,7 @@
 import { BackgroundType, Profile } from "@prisma/client"
 import SteamID from "steamid"
 import Link from "next/link"
-import ExportedImage from "next-image-export-optimizer"
+import Image from "next/image"
 
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -98,7 +98,7 @@ function ProfileAvatar({
       className={avatarFrameUrl ? "py-1" : undefined}
     >
       {avatarFrameUrl && (
-        <ExportedImage
+        <Image
           className="absolute scale-125"
           src={avatarFrameUrl}
           alt="Avatar Frame"
@@ -107,7 +107,7 @@ function ProfileAvatar({
         />
       )}
 
-      <ExportedImage
+      <Image
         className={
           avatarFrameUrl
             ? undefined

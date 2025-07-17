@@ -1,6 +1,6 @@
 import { GithubIcon } from "lucide-react"
 import Link from "next/link"
-import ExportedImage from "next-image-export-optimizer"
+import Image from "next/image"
 
 import Center from "@/components/center"
 import SearchForm from "@/components/search-form"
@@ -20,12 +20,7 @@ export default function Home() {
       <Card className="max-w-lg w-full">
         <CardHeader>
           <CardTitle className="text-2xl flex items-center gap-2">
-            <ExportedImage
-              src="/icon-dark.png"
-              alt="Logo"
-              width={24}
-              height={24}
-            />
+            <Image src="/icon-dark.png" alt="Logo" width={24} height={24} />
             SteamLookup
           </CardTitle>
 
