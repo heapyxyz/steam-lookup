@@ -176,7 +176,7 @@ function ProfileBans({
 
         {vacBans > 0 && (
           <p>
-            {gameBans} VAC {gameBans === 1 ? "Ban" : "Bans"}
+            {vacBans} VAC {vacBans === 1 ? "Ban" : "Bans"}
           </p>
         )}
 
