@@ -135,15 +135,15 @@ function ProfileUser({
         {username}
       </p>
 
-      {level && <ProfileLevel level={level} />}
+      {level ? <ProfileLevel level={level} /> : undefined}
     </div>
   )
 }
 
 function ProfileLevel({ level }: { level: number }) {
-  if (level >= 6200) level = 0
+  if (level <= 0 || level >= 6200) return
 
-  const getLevelClass = (level = 0) => {
+  const getLevelClass = (level: number) => {
     const lvl = Math.floor(level / 100) * 100 || Math.floor(level / 10) * 10
     const lvl_plus = Math.floor((level - lvl) / 10) * 10
 
@@ -156,7 +156,7 @@ function ProfileLevel({ level }: { level: number }) {
 
   return (
     <div className={`friendPlayerLevel ${getLevelClass(level)}`}>
-      <span className="profileLevelNum text-foreground">{level}</span>
+      <span className="text-foreground">{level}</span>
     </div>
   )
 }
