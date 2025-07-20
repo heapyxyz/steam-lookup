@@ -6,31 +6,10 @@ import { getRandom } from "random-useragent"
 
 import { prisma } from "./prisma"
 import { Background, Bans, Game, InputType } from "@/types"
+import { Identifier } from "./identifier"
+import { faceit } from "./faceit"
 
 class SteamClient {
-  private readonly reProfileUrlBase = String.raw`(?:(?:https?)?:\/\/)?(?:www.)?steamcommunity.com`
-  private readonly reUserUrlBase = String.raw`(?:(?:https?)?:\/\/)?s.team`
-
-  private readonly reProfileUrl64 = RegExp(
-    String.raw`^${this.reProfileUrlBase}\/profiles\/(7656119\d{10})`
-  )
-  private readonly reProfileUrl3 = RegExp(
-    String.raw`^${this.reProfileUrlBase}\/profiles\/(\[U:1:\d+\])`
-  )
-  private readonly reProfileUrlVanity = RegExp(
-    String.raw`^${this.reProfileUrlBase}\/id\/([a-zA-Z0-9_-]{2,32})`
-  )
-  private readonly reUserUrl = RegExp(
-    String.raw`^${this.reUserUrlBase}\/p\/([a-z]{1,4}(?:\-[a-z]{1,4})?)`
-  )
-
-  private readonly reSteam64 = RegExp(String.raw`^(7656119\d{10})$`)
-  private readonly reSteam3 = RegExp(String.raw`^[U:1:\d+]$`)
-  private readonly reSteam3NB = RegExp(String.raw`^U:1:\d+$`)
-  private readonly reSteam2 = RegExp(String.raw`^(STEAM_[0-1]:[0-9]:\d+)$`)
-  private readonly reUser = RegExp(String.raw`^([a-z]{1,4}(?:-[a-z]{1,4})?)$`)
-  private readonly reVanity = RegExp(String.raw`^([a-zA-Z0-9_-]{2,32})$`, "i")
-
   private readonly apiKey: string
   private readonly apiUrlBase = "https://api.steampowered.com"
   private readonly cdnUrlBase =
@@ -38,22 +17,6 @@ class SteamClient {
 
   constructor(apiKey: string) {
     this.apiKey = apiKey
-  }
-
-  private identifyInput(input: string): InputType {
-    if (this.reProfileUrl64.test(input)) return InputType.ProfileUrl64
-    else if (this.reProfileUrl3.test(input)) return InputType.ProfileUrl3
-    else if (this.reProfileUrlVanity.test(input))
-      return InputType.ProfileUrlVanity
-    else if (this.reUserUrl.test(input)) return InputType.UserUrl
-    else if (this.reSteam64.test(input)) return InputType.Steam64
-    else if (this.reSteam3.test(input)) return InputType.Steam3
-    else if (this.reSteam3NB.test(input)) return InputType.Steam3NB
-    else if (this.reSteam2.test(input)) return InputType.Steam2
-    else if (this.reUser.test(input)) return InputType.User
-    else if (this.reVanity.test(input)) return InputType.Vanity
-
-    return InputType.None
   }
 
   private async vanityToId64(input: string): Promise<string | null> {
@@ -73,7 +36,7 @@ class SteamClient {
 
     const response = await this.fetch(input)
     const url = response.url
-    const userId = input.match(this.reUserUrl)![1]
+    const userId = input.match(Identifier.reUserUrl)![1]
 
     if (
       url === `https://steamcommunity.com/id/${userId}` ||
@@ -81,12 +44,15 @@ class SteamClient {
     )
       return null
 
-    if (!this.reProfileUrl64.test(url) && !this.reProfileUrlVanity.test(url))
+    if (
+      !Identifier.reProfileUrl64.test(url) &&
+      !Identifier.reProfileUrlVanity.test(url)
+    )
       return null
 
-    const id64 = this.reProfileUrl64.test(url)
-      ? url.match(this.reProfileUrl64)![1]
-      : await this.vanityToId64(url.match(this.reProfileUrlVanity)![1])
+    const id64 = Identifier.reProfileUrl64.test(url)
+      ? url.match(Identifier.reProfileUrl64)![1]
+      : await this.vanityToId64(url.match(Identifier.reProfileUrlVanity)![1])
 
     if (id64)
       await prisma.profile.updateMany({
@@ -113,16 +79,21 @@ class SteamClient {
   }
 
   async resolveToId64(input: string): Promise<string | null> {
-    const type = this.identifyInput(input)
-    if (type === InputType.None) return null
+    const type = Identifier.identifyInput(input)
 
     switch (type) {
+      default:
+        return null
       case InputType.ProfileUrl64:
-        return input.match(this.reProfileUrl64)![1]
+        return input.match(Identifier.reProfileUrl64)![1]
       case InputType.ProfileUrl3:
-        return new SteamID(input.match(this.reProfileUrl3)![1]).getSteamID64()
+        return new SteamID(
+          input.match(Identifier.reProfileUrl3)![1]
+        ).getSteamID64()
       case InputType.ProfileUrlVanity:
-        return await this.vanityToId64(input.match(this.reProfileUrlVanity)![1])
+        return await this.vanityToId64(
+          input.match(Identifier.reProfileUrlVanity)![1]
+        )
       case InputType.UserUrl:
         return await this.userToId64(input)
       case InputType.Steam64:
@@ -140,7 +111,7 @@ class SteamClient {
   }
 
   async getProfile(id64: string): Promise<Profile | null> {
-    const type = this.identifyInput(id64)
+    const type = Identifier.identifyInput(id64)
     if (type !== InputType.Steam64) return null
 
     const existingProfile = await prisma.profile.findUnique({
@@ -170,6 +141,7 @@ class SteamClient {
     const avatarFrame = await this.getAvatarFrame(id64)
     const bans = await this.getBans(id64)
     const games = await this.getGames(id64)
+    const faceitPlayer = await faceit.getPlayer(id64)
 
     const profile: Profile = {
       steamId: id64,
@@ -190,11 +162,16 @@ class SteamClient {
       daysSinceLastBan: bans.daysSinceLastBan,
       gameCount: games.gameCount,
       playtime: games.games.reduce((acc, game) => acc + game.playtime, 0),
+      faceitUrl: faceitPlayer?.url ?? null,
+      faceitLevel: faceitPlayer?.level ?? null,
+      faceitElo: faceitPlayer?.elo ?? null,
       lastUpdated: new Date(Date.now()),
     }
 
-    if (this.identifyInput(data.profileurl) === InputType.ProfileUrlVanity)
-      profile.vanity = data.profileurl.match(this.reProfileUrlVanity)![1]
+    if (
+      Identifier.identifyInput(data.profileurl) === InputType.ProfileUrlVanity
+    )
+      profile.vanity = data.profileurl.match(Identifier.reProfileUrlVanity)![1]
 
     return await this.updateOrCreate(profile)
   }
@@ -205,7 +182,7 @@ class SteamClient {
       url: "https://steamcommunity-a.akamaihd.net/public/images/profile/2020/bg_dots.png",
     }
 
-    const type = this.identifyInput(id64)
+    const type = Identifier.identifyInput(id64)
     if (type !== InputType.Steam64) return background
 
     const response = await this.fetch(
@@ -239,7 +216,7 @@ class SteamClient {
   }
 
   async getAnimatedAvatar(id64: string): Promise<string | null> {
-    const type = this.identifyInput(id64)
+    const type = Identifier.identifyInput(id64)
     if (type !== InputType.Steam64) return null
 
     const response = await this.fetch(
@@ -253,7 +230,7 @@ class SteamClient {
   }
 
   async getAvatarFrame(id64: string): Promise<string | null> {
-    const type = this.identifyInput(id64)
+    const type = Identifier.identifyInput(id64)
     if (type !== InputType.Steam64) return null
 
     const response = await this.fetch(
@@ -275,7 +252,7 @@ class SteamClient {
       daysSinceLastBan: 0,
     }
 
-    const type = this.identifyInput(id64)
+    const type = Identifier.identifyInput(id64)
     if (type !== InputType.Steam64) return bans
 
     const response = await this.fetch(
@@ -300,7 +277,7 @@ class SteamClient {
   async getGames(id64: string): Promise<{ gameCount: number; games: Game[] }> {
     const games: Game[] = []
 
-    const type = this.identifyInput(id64)
+    const type = Identifier.identifyInput(id64)
     if (type !== InputType.Steam64) return { gameCount: 0, games }
 
     const response = await this.fetch(
@@ -325,11 +302,14 @@ class SteamClient {
 
   private async fetch(route: string, retries: number = 10): Promise<Response> {
     const url = new URL(route, this.apiUrlBase)
+
     for (let i = 0; i < retries; i++) {
       const response = await fetch(url, {
         headers: { "user-agent": getRandom() },
       })
-      console.log(`SteamLookup ${response.status} ${route}`)
+
+      console.log(`SteamClient: ${response.status} ${route}`)
+
       if (response.status === 200) return response
 
       // Delay by 2^i * 100ms + a random delay up to 1000ms
@@ -337,7 +317,10 @@ class SteamClient {
       await new Promise((r) => setTimeout(r, delay))
     }
 
-    console.log(`SteamLookup failed to fetch ${route} after ${retries} retries`)
+    console.log(
+      `SteamClient: failed to fetch ${route} after ${retries} retries`
+    )
+
     return new Response(null, {
       status: 418,
       statusText: `Fetch failed after ${retries} retries`,

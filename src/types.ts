@@ -1,7 +1,7 @@
 import { BackgroundType } from "@prisma/client"
-import { type } from "arktype"
+import { type as arktype } from "arktype"
 
-export const Input = type("0 < string <= 64")
+export const Input = arktype("0 < string <= 64")
 export type Input = typeof Input.infer
 
 export enum InputType {
@@ -16,6 +16,7 @@ export enum InputType {
   Steam3NB,
   User,
   Vanity,
+  FaceitUrl,
 }
 
 export interface Background {
@@ -34,4 +35,10 @@ export interface Bans {
 export interface Game {
   appId: number
   playtime: number
+}
+
+export interface FaceitPlayer {
+  url: string
+  level: number
+  elo: number
 }

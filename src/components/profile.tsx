@@ -8,6 +8,20 @@ import { cn } from "@/lib/utils"
 import Center from "./center"
 import "./profile.css"
 import { Bans } from "@/types"
+import { buttonVariants } from "./ui/button"
+import {
+  Faceit,
+  FaceitLevelEight,
+  FaceitLevelFive,
+  FaceitLevelFour,
+  FaceitLevelNine,
+  FaceitLevelOne,
+  FaceitLevelSeven,
+  FaceitLevelSix,
+  FaceitLevelTen,
+  FaceitLevelThree,
+  FaceitLevelTwo,
+} from "./icons"
 
 export default function ProfileCard({ profile }: { profile: Profile | null }) {
   if (!profile) return <ProfileNotFound />
@@ -28,7 +42,11 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
               avatarFrameUrl={profile.avatarFrameUrl}
             />
 
-            <ProfileUser username={profile.username} level={profile.level} />
+            <ProfileUser
+              username={profile.username}
+              level={profile.level}
+              faceitLevel={profile.faceitLevel}
+            />
 
             <ProfileBans
               communityBanned={profile.communityBanned}
@@ -46,6 +64,21 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
             />
 
             <ProfileSteamIds steamId={new SteamID(profile.steamId)} />
+
+            {profile.faceitUrl && (
+              <Link
+                className={buttonVariants({
+                  className: "max-w-[128px] w-full mt-2",
+                  variant: "secondary",
+                  size: "sm",
+                })}
+                href={profile.faceitUrl}
+                target="_blank"
+              >
+                <Faceit />
+                FACEIT
+              </Link>
+            )}
           </CardContent>
         </Card>
       </Center>
@@ -125,9 +158,11 @@ function ProfileAvatar({
 function ProfileUser({
   username,
   level,
+  faceitLevel,
 }: {
   username: string
   level: number | null
+  faceitLevel: number | null
 }) {
   return (
     <div className="flex gap-2 items-center">
@@ -136,6 +171,8 @@ function ProfileUser({
       </p>
 
       {level ? <ProfileLevel level={level} /> : undefined}
+
+      {faceitLevel ? <ProfileFaceitLevel level={faceitLevel} /> : undefined}
     </div>
   )
 }
@@ -145,13 +182,10 @@ function ProfileLevel({ level }: { level: number }) {
 
   const getLevelClass = (level: number) => {
     const lvl = Math.floor(level / 100) * 100 || Math.floor(level / 10) * 10
-    const lvl_plus = Math.floor((level - lvl) / 10) * 10
+    if (lvl < 100) return `lvl_${lvl}`
 
-    if (lvl < 100) {
-      return `lvl_${lvl}`
-    }
-
-    return `lvl_${lvl} lvl_plus_${lvl_plus}`
+    const lvlPlus = Math.floor((level - lvl) / 10) * 10
+    return `lvl_${lvl} lvl_plus_${lvlPlus}`
   }
 
   return (
@@ -159,6 +193,33 @@ function ProfileLevel({ level }: { level: number }) {
       <span className="text-foreground">{level}</span>
     </div>
   )
+}
+
+function ProfileFaceitLevel({ level }: { level: number }) {
+  switch (level) {
+    default:
+      return undefined
+    case 1:
+      return <FaceitLevelOne />
+    case 2:
+      return <FaceitLevelTwo />
+    case 3:
+      return <FaceitLevelThree />
+    case 4:
+      return <FaceitLevelFour />
+    case 5:
+      return <FaceitLevelFive />
+    case 6:
+      return <FaceitLevelSix />
+    case 7:
+      return <FaceitLevelSeven />
+    case 8:
+      return <FaceitLevelEight />
+    case 9:
+      return <FaceitLevelNine />
+    case 10:
+      return <FaceitLevelTen />
+  }
 }
 
 function ProfileBans({

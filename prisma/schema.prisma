@@ -26,6 +26,9 @@ model Profile {
   daysSinceLastBan Int            @default(0) @map("days_since_last_ban")
   gameCount        Int            @default(0) @map("game_count")
   playtime         Int            @default(0) @map("playtime")
+  faceitUrl        String?        @map("faceit_url")
+  faceitLevel      Int?           @map("faceit_level")
+  faceitElo        Int?           @map("faceit_elo")
   lastUpdated      DateTime       @updatedAt @map("last_updated")
 
   @@map("profiles")
