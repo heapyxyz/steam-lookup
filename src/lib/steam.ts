@@ -126,8 +126,6 @@ class SteamClient {
     )
       return existingProfile
 
-    if (existingProfile) await this.updateOrCreate(existingProfile)
-
     const response = await this.fetch(
       `/ISteamUser/GetPlayerSummaries/v2/?key=${this.apiKey}&steamids=${id64}`
     )
@@ -265,8 +263,7 @@ class SteamClient {
     if (!data) return bans
 
     bans.communityBanned = data.CommunityBanned
-    bans.tradeBanned =
-      data.EconomyBan === "banned" || data.EconomyBan !== "none"
+    bans.tradeBanned = data.EconomyBan !== "none"
     bans.vacBans = data.NumberOfVACBans
     bans.gameBans = data.NumberOfGameBans
     bans.daysSinceLastBan = data.DaysSinceLastBan
