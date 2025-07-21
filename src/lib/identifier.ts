@@ -31,7 +31,7 @@ export class Identifier {
   static readonly reSteam64 = RegExp(String.raw`^(7656119\d{10})$`)
   static readonly reSteam3 = RegExp(String.raw`^\[U:1:\d+\]$`, "i")
   static readonly reSteam3NB = RegExp(String.raw`^U:1:\d+$`, "i")
-  static readonly reSteam2 = RegExp(String.raw`^(STEAM_[0-1]:[0-9]:\d+)$`, "i")
+  static readonly reSteam2 = RegExp(String.raw`^(STEAM_[0-1]:[0-1]:\d+)$`, "i")
   static readonly reUser = RegExp(
     String.raw`^([a-z]{1,4}(?:-[a-z]{1,4})?)$`,
     "i"
