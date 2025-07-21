@@ -4,31 +4,39 @@ import { InputType } from "@/types"
 
 export class Identifier {
   static readonly reFaceitUrl = RegExp(
-    String.raw`(?:(?:https?)?:\/\/)?(?:www.)?faceit.com\/[a-z-]+\/players\/([a-zA-Z0-9_-]{1,20})`
+    String.raw`(?:(?:https?)?:\/\/)?(?:www.)?faceit.com\/[a-z-]+\/players\/([a-z0-9_-]{1,20})`,
+    "i"
   )
 
   static readonly reProfileUrlBase = String.raw`(?:(?:https?)?:\/\/)?(?:www.)?steamcommunity.com`
   static readonly reUserUrlBase = String.raw`(?:(?:https?)?:\/\/)?s.team`
 
   static readonly reProfileUrl64 = RegExp(
-    String.raw`^${this.reProfileUrlBase}\/profiles\/(7656119\d{10})`
+    String.raw`^${this.reProfileUrlBase}\/profiles\/(7656119\d{10})`,
+    "i"
   )
   static readonly reProfileUrl3 = RegExp(
-    String.raw`^${this.reProfileUrlBase}\/profiles\/(\[U:1:\d+\])`
+    String.raw`^${this.reProfileUrlBase}\/profiles\/(\[U:1:\d+\])`,
+    "i"
   )
   static readonly reProfileUrlVanity = RegExp(
-    String.raw`^${this.reProfileUrlBase}\/id\/([a-zA-Z0-9_-]{2,32})`
+    String.raw`^${this.reProfileUrlBase}\/id\/([a-zA-Z0-9_-]{2,32})`,
+    "i"
   )
   static readonly reUserUrl = RegExp(
-    String.raw`^${this.reUserUrlBase}\/p\/([a-z]{1,4}(?:\-[a-z]{1,4})?)`
+    String.raw`^${this.reUserUrlBase}\/p\/([a-z]{1,4}(?:\-[a-z]{1,4})?)`,
+    "i"
   )
 
   static readonly reSteam64 = RegExp(String.raw`^(7656119\d{10})$`)
-  static readonly reSteam3 = RegExp(String.raw`^[U:1:\d+]$`)
-  static readonly reSteam3NB = RegExp(String.raw`^U:1:\d+$`)
-  static readonly reSteam2 = RegExp(String.raw`^(STEAM_[0-1]:[0-9]:\d+)$`)
-  static readonly reUser = RegExp(String.raw`^([a-z]{1,4}(?:-[a-z]{1,4})?)$`)
-  static readonly reVanity = RegExp(String.raw`^([a-zA-Z0-9_-]{2,32})$`, "i")
+  static readonly reSteam3 = RegExp(String.raw`^\[U:1:\d+\]$`, "i")
+  static readonly reSteam3NB = RegExp(String.raw`^U:1:\d+$`, "i")
+  static readonly reSteam2 = RegExp(String.raw`^(STEAM_[0-1]:[0-9]:\d+)$`, "i")
+  static readonly reUser = RegExp(
+    String.raw`^([a-z]{1,4}(?:-[a-z]{1,4})?)$`,
+    "i"
+  )
+  static readonly reVanity = RegExp(String.raw`^([a-z0-9_-]{2,32})$`, "i")
 
   static identifyInput(input: string): InputType {
     if (Identifier.reFaceitUrl.test(input)) return InputType.FaceitUrl

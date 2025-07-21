@@ -88,7 +88,7 @@ class SteamClient {
         return input.match(Identifier.reProfileUrl64)![1]
       case InputType.ProfileUrl3:
         return new SteamID(
-          input.match(Identifier.reProfileUrl3)![1]
+          input.match(Identifier.reProfileUrl3)![1].toUpperCase()
         ).getSteamID64()
       case InputType.ProfileUrlVanity:
         return await this.vanityToId64(
@@ -100,9 +100,9 @@ class SteamClient {
         return input
       case InputType.Steam2:
       case InputType.Steam3:
-        return new SteamID(input).getSteamID64()
+        return new SteamID(input.toUpperCase()).getSteamID64()
       case InputType.Steam3NB:
-        return new SteamID(`[${input}]`).getSteamID64()
+        return new SteamID(`[${input.toUpperCase()}]`).getSteamID64()
       case InputType.User:
         return await this.userToId64(`https://s.team/p/${input}`)
       case InputType.Vanity:
