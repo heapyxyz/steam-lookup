@@ -4,7 +4,7 @@ import { InputType } from "@/types"
 
 export class Identifier {
   static readonly reFaceitUrl = RegExp(
-    String.raw`(?:(?:https?)?:\/\/)?(?:www.)?faceit.com\/en\/players\/([a-zA-Z0-9_-]{1,20})`
+    String.raw`(?:(?:https?)?:\/\/)?(?:www.)?faceit.com\/[a-z-]+\/players\/([a-zA-Z0-9_-]{1,20})`
   )
 
   static readonly reProfileUrlBase = String.raw`(?:(?:https?)?:\/\/)?(?:www.)?steamcommunity.com`
