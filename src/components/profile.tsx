@@ -263,39 +263,41 @@ function ProfileBody({
   playtime: number
 }) {
   return (
-    <div className="grid grid-cols-2 grid-center-last gap-y-1 gap-x-4">
-      {vanity && (
-        <div>
-          <p className="text-foreground">Vanity</p>
-          <p className="select-text">{vanity}</p>
-        </div>
-      )}
+    (vanity || timeCreated || gameCount > 0 || playtime > 0) && (
+      <div className="grid grid-cols-2 grid-center-last gap-y-1 gap-x-4">
+        {vanity && (
+          <div>
+            <p className="text-foreground">Vanity</p>
+            <p className="select-text">{vanity}</p>
+          </div>
+        )}
 
-      {timeCreated && (
-        <div>
-          <p className="text-foreground">Created On</p>
-          <p className="select-text">
-            {new Date(timeCreated * 1000).toLocaleDateString()}
-          </p>
-        </div>
-      )}
+        {timeCreated && (
+          <div>
+            <p className="text-foreground">Created On</p>
+            <p className="select-text">
+              {new Date(timeCreated * 1000).toLocaleDateString()}
+            </p>
+          </div>
+        )}
 
-      {gameCount > 0 && (
-        <div>
-          <p className="text-foreground">Games Owned</p>
-          <p className="select-text">{gameCount}</p>
-        </div>
-      )}
+        {gameCount > 0 && (
+          <div>
+            <p className="text-foreground">Games Owned</p>
+            <p className="select-text">{gameCount}</p>
+          </div>
+        )}
 
-      {playtime > 0 && (
-        <div>
-          <p className="text-foreground">Playtime</p>
-          <p className="select-text">
-            {Math.round((playtime * 10) / 60) / 10} Hours
-          </p>
-        </div>
-      )}
-    </div>
+        {playtime > 0 && (
+          <div>
+            <p className="text-foreground">Playtime</p>
+            <p className="select-text">
+              {Math.round((playtime * 10) / 60) / 10} Hours
+            </p>
+          </div>
+        )}
+      </div>
+    )
   )
 }
 
@@ -321,21 +323,23 @@ function ProfileFaceit({
 }) {
   return (
     <>
-      <div className="grid grid-cols-2 grid-center-last gap-y-1 gap-x-4">
-        {level && (
-          <div>
-            <p className="text-foreground">FACEIT Level</p>
-            <p className="select-text">{level}</p>
-          </div>
-        )}
+      {(level || elo) && (
+        <div className="grid grid-cols-2 grid-center-last gap-y-1 gap-x-4">
+          {level && (
+            <div>
+              <p className="text-foreground">FACEIT Level</p>
+              <p className="select-text">{level}</p>
+            </div>
+          )}
 
-        {elo && (
-          <div>
-            <p className="text-foreground">FACEIT Elo</p>
-            <p className="select-text">{elo}</p>
-          </div>
-        )}
-      </div>
+          {elo && (
+            <div>
+              <p className="text-foreground">FACEIT Elo</p>
+              <p className="select-text">{elo}</p>
+            </div>
+          )}
+        </div>
+      )}
 
       {url && (
         <Link
