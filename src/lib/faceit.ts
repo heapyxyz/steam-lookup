@@ -27,7 +27,7 @@ class FaceitClient {
     return {
       url: data.faceit_url.replace("{lang}", "en"),
       level: data.games.cs2.skill_level,
-      elo: data.games.cs2.elo,
+      elo: data.games.cs2.faceit_elo,
     }
   }
 
