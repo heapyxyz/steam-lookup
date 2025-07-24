@@ -65,20 +65,11 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
 
             <ProfileSteamIds steamId={new SteamID(profile.steamId)} />
 
-            {profile.faceitUrl && (
-              <Link
-                className={buttonVariants({
-                  className: "max-w-[128px] w-full mt-2",
-                  variant: "secondary",
-                  size: "sm",
-                })}
-                href={profile.faceitUrl}
-                target="_blank"
-              >
-                <Faceit />
-                FACEIT
-              </Link>
-            )}
+            <ProfileFaceit
+              elo={profile.faceitElo}
+              level={profile.faceitLevel}
+              url={profile.faceitUrl}
+            />
           </CardContent>
         </Card>
       </Center>
@@ -316,6 +307,51 @@ function ProfileSteamIds({ steamId }: { steamId: SteamID }) {
       <p className="select-all">{steamId.getSteam3RenderedID()}</p>
       <p className="select-all">{steamId.getSteamID64()}</p>
     </div>
+  )
+}
+
+function ProfileFaceit({
+  level,
+  elo,
+  url,
+}: {
+  level: number | null
+  elo: number | null
+  url: string | null
+}) {
+  return (
+    <>
+      <div className="grid grid-cols-2 grid-center-last gap-y-1 gap-x-4">
+        {level && (
+          <div>
+            <p className="text-foreground">FACEIT Level</p>
+            <p className="select-text">{level}</p>
+          </div>
+        )}
+
+        {elo && (
+          <div>
+            <p className="text-foreground">FACEIT Elo</p>
+            <p className="select-text">{elo}</p>
+          </div>
+        )}
+      </div>
+
+      {url && (
+        <Link
+          className={buttonVariants({
+            className: "max-w-[128px] w-full",
+            variant: "secondary",
+            size: "sm",
+          })}
+          href={url}
+          target="_blank"
+        >
+          <Faceit />
+          FACEIT
+        </Link>
+      )}
+    </>
   )
 }
 
