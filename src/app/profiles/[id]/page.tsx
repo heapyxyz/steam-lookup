@@ -1,10 +1,28 @@
 import { BackgroundType } from "@prisma/client"
+import { Metadata } from "next"
 
 import FixedElement from "@/components/fixed-element"
 import SearchForm from "@/components/search-form"
 import { steam } from "@/lib/steam"
 import { cn } from "@/lib/utils"
 import ProfileCard from "@/components/profile"
+import { Identifier } from "@/lib/identifier"
+import { InputType } from "@/types"
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}): Promise<Metadata> {
+  const { id } = await params
+
+  const type = Identifier.identifyInput(id)
+  if (type !== InputType.Steam64) return {}
+
+  return {
+    title: id,
+  }
+}
 
 export default async function Profile({
   params,

@@ -27,7 +27,7 @@ export default function Home() {
           <CardHeader>
             <CardTitle className="text-2xl flex items-center gap-2">
               <Image src="/icon-dark.png" alt="Logo" width={24} height={24} />
-              SteamLookup
+              <h1>SteamLookup</h1>
             </CardTitle>
 
             <CardDescription>
