@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Head from "next/head"
 
 import "./globals.css"
 import Providers from "@/app/providers"
@@ -109,6 +110,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <Head>
+        {process.env.ADSENSE_ID && (
+          <meta
+            name="google-adsense-account"
+            content={process.env.ADSENSE_ID}
+          />
+        )}
+      </Head>
+
       <body className="antialiased select-none">
         <Providers>
           <main className="min-h-dvh max-w-5xl container mx-auto p-4 flex flex-col">
