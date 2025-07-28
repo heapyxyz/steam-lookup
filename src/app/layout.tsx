@@ -6,13 +6,21 @@ import { Toaster } from "@/components/ui/sonner"
 import Footer from "@/components/footer"
 
 export const metadata: Metadata = {
-  title: "SteamLookup",
-  description: "The easiest way to lookup Steam profiles.",
+  title: {
+    default: "SteamLookup - Find Any Steam Profile Instantly",
+    template: "%s - SteamLookup",
+  },
+  description:
+    "Lookup Steam profiles by ID, custom URL, or profile link. Now with FACEIT support.",
   generator: "Next.js",
   applicationName: "SteamLookup",
   authors: [{ name: "heapy", url: "https://heapy.xyz" }],
   creator: "heapy",
   publisher: "heapy",
+  metadataBase: new URL("https://heapy.xyz"),
+  alternates: {
+    canonical: "/",
+  },
   keywords: [
     "steam",
     "steamlookup",
@@ -37,6 +45,18 @@ export const metadata: Metadata = {
     "steam profile information",
     "steam profile data",
     "steam profile insights",
+    "steam profile finder",
+    "steam id finder",
+    "steam account lookup",
+    "find steam id",
+    "steam profile search",
+    "faceit",
+    "faceit lookup",
+    "faceit finder",
+    "faceit profile",
+    "faceit stats",
+    "faceit elo",
+    "faceit level",
   ],
   icons: {
     icon: [
@@ -47,15 +67,33 @@ export const metadata: Metadata = {
       },
       {
         media: "(prefers-color-scheme: dark)",
-        url: "/icon.png",
+        url: "/icon-dark.png",
         href: "/icon-dark.png",
       },
     ],
   },
+  openGraph: {
+    title: "SteamLookup - Find Any Steam Profile Instantly",
+    description:
+      "Lookup Steam profiles by ID, custom URL, or profile link. Now with FACEIT support.",
+    url: "https://heapy.xyz",
+    siteName: "SteamLookup",
+    images: [
+      {
+        url: "https://heapy.xyz/icon-dark.png",
+        width: 512,
+        height: 512,
+        alt: "Logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
   twitter: {
-    card: "summary",
-    title: "SteamLookup",
-    description: "An easy-to-use website that lets you lookup Steam profiles.",
+    card: "summary_large_image",
+    title: "SteamLookup - Find Any Steam Profile Instantly",
+    description:
+      "Lookup Steam profiles by ID, custom URL, or profile link. Now with FACEIT support.",
     creator: "@heapyxyz",
     images: {
       url: "https://heapy.xyz/icon-dark.png",
