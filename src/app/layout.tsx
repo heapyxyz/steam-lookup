@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: "%s - SteamLookup",
   },
   description:
-    "Lookup Steam profiles by ID, custom URL, or profile link. Now with FACEIT support.",
+    "Lookup profiles by Steam IDs, vanities or profile URLs. Now with FACEIT support.",
   generator: "Next.js",
   applicationName: "SteamLookup",
   authors: [{ name: "heapy", url: "https://heapy.xyz" }],
@@ -75,7 +75,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SteamLookup - Find Any Steam Profile Instantly",
     description:
-      "Lookup Steam profiles by ID, custom URL, or profile link. Now with FACEIT support.",
+      "Lookup profiles by Steam IDs, vanities or profile URLs. Now with FACEIT support.",
     url: "https://heapy.xyz",
     siteName: "SteamLookup",
     images: [
@@ -93,7 +93,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "SteamLookup - Find Any Steam Profile Instantly",
     description:
-      "Lookup Steam profiles by ID, custom URL, or profile link. Now with FACEIT support.",
+      "Lookup profiles by Steam IDs, vanities or profile URLs. Now with FACEIT support.",
     creator: "@heapyxyz",
     images: {
       url: "https://heapy.xyz/icon-dark.png",
