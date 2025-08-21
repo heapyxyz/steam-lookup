@@ -11,16 +11,18 @@ import { Bans } from "@/types"
 import { buttonVariants } from "./ui/button"
 import {
   Faceit,
-  FaceitLevelEight,
-  FaceitLevelFive,
-  FaceitLevelFour,
-  FaceitLevelNine,
   FaceitLevelOne,
-  FaceitLevelSeven,
-  FaceitLevelSix,
-  FaceitLevelTen,
-  FaceitLevelThree,
   FaceitLevelTwo,
+  FaceitLevelThree,
+  FaceitLevelFour,
+  FaceitLevelFive,
+  FaceitLevelSix,
+  FaceitLevelSeven,
+  FaceitLevelEight,
+  FaceitLevelNine,
+  FaceitLevelTen,
+  Steam,
+  CsStats,
 } from "./icons"
 
 export default function ProfileCard({ profile }: { profile: Profile | null }) {
@@ -70,6 +72,8 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
               level={profile.faceitLevel}
               url={profile.faceitUrl}
             />
+
+            <ProfileButtons steamId={profile.steamId} />
           </CardContent>
         </Card>
       </Center>
@@ -343,11 +347,13 @@ function ProfileFaceit({
 
       {url && (
         <Link
-          className={buttonVariants({
-            className: "max-w-[128px] w-full",
-            variant: "secondary",
-            size: "sm",
-          })}
+          className={cn(
+            buttonVariants({
+              className:
+                "max-w-[192px] w-full bg-[#FF5500] hover:bg-[#FF5500]/80",
+              size: "sm",
+            })
+          )}
           href={url}
           target="_blank"
         >
@@ -355,6 +361,42 @@ function ProfileFaceit({
           FACEIT
         </Link>
       )}
+    </>
+  )
+}
+
+function ProfileButtons({ steamId }: { steamId: string }) {
+  return (
+    <>
+      <Link
+        className={cn(
+          buttonVariants({
+            className:
+              "max-w-[192px] w-full text-foreground bg-[#173ADE] hover:bg-[#173ADE]/80",
+            size: "sm",
+          })
+        )}
+        href={`https://csstats.gg/player/${steamId}`}
+        target="_blank"
+      >
+        <CsStats />
+        CSSTATS.GG
+      </Link>
+
+      <Link
+        className={cn(
+          buttonVariants({
+            className: "max-w-[192px] w-full",
+            variant: "secondary",
+            size: "sm",
+          })
+        )}
+        href={`https://steamdb.info/calculator/${steamId}`}
+        target="_blank"
+      >
+        <Steam />
+        SteamDB
+      </Link>
     </>
   )
 }
