@@ -3,7 +3,6 @@ import type { Metadata } from "next"
 import "./globals.css"
 import Providers from "@/app/providers"
 import { Toaster } from "@/components/ui/sonner"
-import Footer from "@/components/footer"
 
 export const metadata: Metadata = {
   title: {
