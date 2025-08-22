@@ -35,7 +35,7 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
         url={profile.backgroundUrl}
       />
 
-      <Center>
+      <Center className="pt-17">
         <Card className="max-w-lg w-full bg-transparent border-0 backdrop-blur-2xl backdrop-brightness-50">
           <CardContent className="text-muted-foreground text-sm text-center flex flex-col items-center gap-2">
             <ProfileAvatar
