@@ -122,7 +122,17 @@ export default function RootLayout({
         <Providers>
           <main className="min-h-dvh max-w-5xl container mx-auto p-4 flex flex-col">
             {children}
-            <Toaster position="bottom-right" visibleToasts={1} />
+            <Toaster
+              position="bottom-right"
+              visibleToasts={1}
+              toastOptions={{
+                style: {
+                  background: "transparent",
+                  border: "none",
+                },
+                className: "backdrop-blur-2xl backdrop-brightness-50",
+              }}
+            />
             <Footer />
           </main>
         </Providers>
