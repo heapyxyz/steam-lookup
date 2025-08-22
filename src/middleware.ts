@@ -4,7 +4,9 @@ import { rateLimit } from "@daveyplate/next-rate-limit"
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next()
 
-  return request.method === "POST" || request.url.indexOf("/profiles/") > -1
+  return (request.method === "POST" ||
+    request.url.indexOf("/profiles/") > -1) &&
+    process.env.NODE_ENV === "production"
     ? await rateLimit({
         request,
         response,
