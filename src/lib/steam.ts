@@ -123,7 +123,7 @@ class SteamClient {
       where: { steamId: id64 },
     })
 
-    // If profile is already in the db and was last updated within last 30 minutes, return stored data
+    // If profile is already in the db and was last updated within last 30 minutes or is already being fetched, return stored data
     // Otherwise fetch the profile and return updated data
     if (
       existingProfile &&
