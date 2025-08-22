@@ -69,8 +69,11 @@ export default function Home() {
             </ul>
           </CardContent>
 
-          <CardFooter className="flex-col gap-2">
+          <CardFooter className="flex-col gap-4">
             <SearchForm />
+            <p className="text-xs text-muted-foreground">
+              SteamLookup © 2025 | Not affiliated with Steam or Valve
+            </p>
           </CardFooter>
         </Card>
       </Center>

@@ -133,7 +133,6 @@ export default function RootLayout({
                 className: "backdrop-blur-2xl backdrop-brightness-50",
               }}
             />
-            <Footer />
           </main>
         </Providers>
       </body>

@@ -3,7 +3,7 @@ import SteamID from "steamid"
 import Link from "next/link"
 import Image from "next/image"
 
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import Center from "./center"
 import "./profile.css"
@@ -75,6 +75,12 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
 
             <ProfileButtons steamId={profile.steamId} />
           </CardContent>
+
+          <CardFooter className="flex-col">
+            <p className="text-xs text-muted-foreground">
+              SteamLookup © 2025 | Not affiliated with Steam or Valve
+            </p>
+          </CardFooter>
         </Card>
       </Center>
     </>
