@@ -14,6 +14,7 @@ class SteamClient {
   private readonly apiUrlBase = "https://api.steampowered.com"
   private readonly cdnUrlBase =
     "https://cdn.fastly.steamstatic.com/steamcommunity/public/images/"
+  private readonly currentlyFetching = new Set<string>()
 
   constructor(apiKey: string) {
     this.apiKey = apiKey
@@ -69,13 +70,17 @@ class SteamClient {
       where: { steamId: profile.steamId },
     })
 
+    let newProfile
     if (existingProfile)
-      return await prisma.profile.update({
+      newProfile = await prisma.profile.update({
         where: { steamId: profile.steamId },
         data: profile,
       })
+    else newProfile = await prisma.profile.create({ data: profile })
 
-    return await prisma.profile.create({ data: profile })
+    this.currentlyFetching.delete(profile.steamId)
+
+    return newProfile
   }
 
   async resolveToId64(input: string): Promise<string | null> {
@@ -118,13 +123,25 @@ class SteamClient {
       where: { steamId: id64 },
     })
 
-    // If profile is already in db and was last updated within last 30 minutes, return the stored profile
-    // Otherwise update the profile and return updated info
+    // If profile is already in the db and was last updated within last 30 minutes, return stored data
+    // Otherwise fetch the profile and return updated data
     if (
       existingProfile &&
-      existingProfile.lastUpdated.getTime() >= Date.now() - 1800000
+      (existingProfile.lastUpdated.getTime() >= Date.now() - 1800000 ||
+        this.currentlyFetching.has(id64))
     )
       return existingProfile
+    // If profile is already being fetched but doesn't exist in the db, wait for it to be stored and then return its data
+    else if (!existingProfile && this.currentlyFetching.has(id64))
+      for (let i = 0; i < 10; i++) {
+        await new Promise((r) => setTimeout(r, 1000))
+        const profile = await prisma.profile.findUnique({
+          where: { steamId: id64 },
+        })
+        if (profile) return profile
+      }
+
+    this.currentlyFetching.add(id64)
 
     const response = await this.fetch(
       `/ISteamUser/GetPlayerSummaries/v2/?key=${this.apiKey}&steamids=${id64}`
