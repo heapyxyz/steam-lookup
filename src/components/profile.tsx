@@ -21,7 +21,7 @@ import {
   FaceitLevelEight,
   FaceitLevelNine,
   FaceitLevelTen,
-  Steam,
+  SteamDb,
   CsStats,
 } from "./icons"
 
@@ -394,7 +394,7 @@ function ProfileButtons({ steamId }: { steamId: string }) {
         href={`https://steamdb.info/calculator/${steamId}`}
         target="_blank"
       >
-        <Steam />
+        <SteamDb />
         SteamDB
       </Link>
     </>
