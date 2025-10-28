@@ -2,7 +2,7 @@
 `steam-lookup` is an easy-to-use website that lets you lookup Steam profiles.
 
 ## Requriements
-- Node.js 18.18 or later (from [Next.js docs](https://nextjs.org/docs/app/getting-started/installation#system-requirements))
+- Node.js 20.9 or later (from [Next.js docs](https://nextjs.org/docs/app/getting-started/installation#system-requirements))
 
 ## Usage
 1. **Install NodeJS:**
@@ -23,8 +23,15 @@
     npm i
     ```
 
-5. **Build the Project:**
+5. **Prepare the Project:**
     ```bash
+    # Push the schema to the database
+    npx prisma db push
+
+    # Generate the database client using the schema
+    npx prisma generate
+    
+    # Build the project
     npm run build
     ```
 
