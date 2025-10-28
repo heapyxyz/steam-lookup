@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { rateLimit } from "@daveyplate/next-rate-limit"
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const response = NextResponse.next()
 
   return (request.method === "POST" ||
