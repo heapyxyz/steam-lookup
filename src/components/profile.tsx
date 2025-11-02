@@ -61,9 +61,9 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
             <ProfileBody
               vanity={profile.vanity}
               timeCreated={profile.timeCreated}
-              gameCount={profile.gameCount}
-              playtime={profile.playtime}
+              totalPlaytime={profile.totalPlaytime}
               csPlaytime={profile.csPlaytime}
+              gameCount={profile.gameCount}
             />
 
             <ProfileSteamIds steamId={new SteamID(profile.steamId)} />
@@ -265,18 +265,22 @@ function ProfileBans({
 function ProfileBody({
   vanity,
   timeCreated,
-  gameCount,
-  playtime,
+  totalPlaytime,
   csPlaytime,
+  gameCount,
 }: {
   vanity: string | null
   timeCreated: number | null
-  gameCount: number
-  playtime: number
+  totalPlaytime: number
   csPlaytime: number
+  gameCount: number
 }) {
   return (
-    (vanity || timeCreated || gameCount > 0 || playtime > 0) && (
+    (vanity ||
+      timeCreated ||
+      totalPlaytime > 0 ||
+      csPlaytime > 0 ||
+      gameCount > 0) && (
       <div className="grid grid-cols-2 grid-center-last gap-y-1 gap-x-4">
         {vanity && (
           <div>
@@ -294,24 +298,24 @@ function ProfileBody({
           </div>
         )}
 
-        {gameCount > 0 && (
-          <div>
-            <p className="text-foreground">Paid Games</p>
-            <p className="select-text">{gameCount}</p>
-          </div>
-        )}
-
-        {playtime > 0 && (
-          <div>
-            <p className="text-foreground">Playtime</p>
-            <p className="select-text">{playtime} Hours</p>
-          </div>
-        )}
-
         {csPlaytime > 0 && (
           <div>
             <p className="text-foreground">CS2 Playtime</p>
             <p className="select-text">{csPlaytime} Hours</p>
+          </div>
+        )}
+
+        {totalPlaytime > 0 && (
+          <div>
+            <p className="text-foreground">Total Playtime</p>
+            <p className="select-text">{totalPlaytime} Hours</p>
+          </div>
+        )}
+
+        {gameCount > 0 && (
+          <div>
+            <p className="text-foreground">Paid Games</p>
+            <p className="select-text">{gameCount}</p>
           </div>
         )}
       </div>

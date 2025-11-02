@@ -177,10 +177,12 @@ class SteamClient {
       gameBans: bans.gameBans,
       daysSinceLastBan: bans.daysSinceLastBan,
       gameCount: paidGames.gameCount,
-      playtime: games.games.reduce((total, game) => total + game.playtime, 0),
-      csPlaytime: games.games
-        .filter((game) => game.appId === 730)
-        .reduce((total, game) => total + game.playtime, 0),
+      totalPlaytime:
+        games.games.reduce((total, game) => total + game.playtime, 0) ?? 0,
+      csPlaytime:
+        games.games
+          .filter((game) => game.appId === 730)
+          .reduce((total, game) => total + game.playtime, 0) ?? 0,
       faceitUrl: faceitPlayer?.url ?? null,
       faceitLevel: faceitPlayer?.level ?? null,
       faceitElo: faceitPlayer?.elo ?? null,
