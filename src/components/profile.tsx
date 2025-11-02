@@ -61,8 +61,8 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
             <ProfileBody
               vanity={profile.vanity}
               timeCreated={profile.timeCreated}
-              totalPlaytime={profile.totalPlaytime}
               csPlaytime={profile.csPlaytime}
+              totalPlaytime={profile.totalPlaytime}
               gameCount={profile.gameCount}
             />
 
@@ -265,21 +265,21 @@ function ProfileBans({
 function ProfileBody({
   vanity,
   timeCreated,
-  totalPlaytime,
   csPlaytime,
+  totalPlaytime,
   gameCount,
 }: {
   vanity: string | null
   timeCreated: number | null
-  totalPlaytime: number
   csPlaytime: number
+  totalPlaytime: number
   gameCount: number
 }) {
   return (
     (vanity ||
       timeCreated ||
-      totalPlaytime > 0 ||
       csPlaytime > 0 ||
+      totalPlaytime > 0 ||
       gameCount > 0) && (
       <div className="grid grid-cols-2 grid-center-last gap-y-1 gap-x-4">
         {vanity && (
@@ -301,14 +301,18 @@ function ProfileBody({
         {csPlaytime > 0 && (
           <div>
             <p className="text-foreground">CS2 Playtime</p>
-            <p className="select-text">{csPlaytime} Hours</p>
+            <p className="select-text">
+              {Math.round(csPlaytime * 10) / 10} Hours
+            </p>
           </div>
         )}
 
         {totalPlaytime > 0 && (
           <div>
             <p className="text-foreground">Total Playtime</p>
-            <p className="select-text">{totalPlaytime} Hours</p>
+            <p className="select-text">
+              {Math.round(totalPlaytime * 10) / 10} Hours
+            </p>
           </div>
         )}
 
