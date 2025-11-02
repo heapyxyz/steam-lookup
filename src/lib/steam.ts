@@ -317,7 +317,10 @@ class SteamClient {
     for (const game of data.games) {
       games.push({
         appId: game.appid,
-        playtime: Math.round((game.playtime_forever * 10) / 60) / 10,
+        playtime:
+          Math.round(
+            ((game.playtime_forever + game.playtime_disconnected) * 10) / 60
+          ) / 10,
       })
     }
 
