@@ -301,18 +301,14 @@ function ProfileBody({
         {csPlaytime > 0 && (
           <div>
             <p className="text-foreground">CS2 Playtime</p>
-            <p className="select-text">
-              {Math.round(csPlaytime * 10) / 10} Hours
-            </p>
+            <p className="select-text">{csPlaytime} Hours</p>
           </div>
         )}
 
         {totalPlaytime > 0 && (
           <div>
             <p className="text-foreground">Total Playtime</p>
-            <p className="select-text">
-              {Math.round(totalPlaytime * 10) / 10} Hours
-            </p>
+            <p className="select-text">{totalPlaytime} Hours</p>
           </div>
         )}
 

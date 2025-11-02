@@ -159,15 +159,14 @@ class SteamClient {
     const paidGames = await this.getGames(id64, true)
     const faceitPlayer = await faceit.getPlayer(id64)
 
-    const csPlaytime = games.games
+    let csPlaytime = games.games
       .filter((game) => game.appId === 730)
       .reduce((total, game) => total + game.playtime, 0)
-    const totalPlaytime = games.games.reduce(
+
+    let totalPlaytime = games.games.reduce(
       (total, game) => total + game.playtime,
       0
     )
-
-    console.log(csPlaytime, totalPlaytime)
 
     const profile: Profile = {
       steamId: id64,
@@ -325,10 +324,7 @@ class SteamClient {
     for (const game of data.games) {
       games.push({
         appId: game.appid,
-        playtime:
-          Math.round(
-            ((game.playtime_forever + game.playtime_disconnected) * 10) / 60
-          ) / 10,
+        playtime: Math.round((game.playtime_forever * 10) / 60) / 10,
       })
     }
 
