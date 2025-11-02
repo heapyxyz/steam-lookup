@@ -156,6 +156,7 @@ class SteamClient {
     const avatarFrame = await this.getAvatarFrame(id64)
     const bans = await this.getBans(id64)
     const games = await this.getGames(id64)
+    const paidGames = await this.getGames(id64, true)
     const faceitPlayer = await faceit.getPlayer(id64)
 
     const profile: Profile = {
@@ -175,7 +176,7 @@ class SteamClient {
       vacBans: bans.vacBans,
       gameBans: bans.gameBans,
       daysSinceLastBan: bans.daysSinceLastBan,
-      gameCount: games.gameCount,
+      gameCount: paidGames.gameCount,
       playtime: games.games.reduce((total, game) => total + game.playtime, 0),
       csPlaytime: games.games
         .filter((game) => game.appId === 730)
@@ -291,14 +292,20 @@ class SteamClient {
     return bans
   }
 
-  async getGames(id64: string): Promise<{ gameCount: number; games: Game[] }> {
+  async getGames(
+    id64: string,
+    paidOnly: boolean = false
+  ): Promise<{ gameCount: number; games: Game[] }> {
     const games: Game[] = []
 
     const type = Identifier.identifyInput(id64)
     if (type !== InputType.Steam64) return { gameCount: 0, games }
 
     const response = await this.fetch(
-      `/IPlayerService/GetOwnedGames/v1/?key=${this.apiKey}&steamid=${id64}`
+      `/IPlayerService/GetOwnedGames/v1/?key=${this.apiKey}&steamid=${id64}` +
+        paidOnly
+        ? "&include_played_free_games=true&include_free_sub=true"
+        : ""
     )
 
     if (response.status !== 200) return { gameCount: 0, games }
