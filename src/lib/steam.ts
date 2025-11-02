@@ -159,6 +159,16 @@ class SteamClient {
     const paidGames = await this.getGames(id64, true)
     const faceitPlayer = await faceit.getPlayer(id64)
 
+    const csPlaytime = games.games
+      .filter((game) => game.appId === 730)
+      .reduce((total, game) => total + game.playtime, 0)
+    const totalPlaytime = games.games.reduce(
+      (total, game) => total + game.playtime,
+      0
+    )
+
+    console.log(csPlaytime, totalPlaytime)
+
     const profile: Profile = {
       steamId: id64,
       backgroundType: background.type,
@@ -177,12 +187,8 @@ class SteamClient {
       gameBans: bans.gameBans,
       daysSinceLastBan: bans.daysSinceLastBan,
       gameCount: paidGames.gameCount,
-      totalPlaytime:
-        games.games.reduce((total, game) => total + game.playtime, 0) ?? 0,
-      csPlaytime:
-        games.games
-          .filter((game) => game.appId === 730)
-          .reduce((total, game) => total + game.playtime, 0) ?? 0,
+      csPlaytime: csPlaytime,
+      totalPlaytime: totalPlaytime,
       faceitUrl: faceitPlayer?.url ?? null,
       faceitLevel: faceitPlayer?.level ?? null,
       faceitElo: faceitPlayer?.elo ?? null,
