@@ -295,7 +295,7 @@ class SteamClient {
     if (type !== InputType.Steam64) return { gameCount: 0, games }
 
     const response = await this.fetch(
-      `/IPlayerService/GetOwnedGames/v1/?key=${this.apiKey}&steamid=${id64}&include_played_free_games=true&include_free_sub=true`
+      `/IPlayerService/GetOwnedGames/v1/?key=${this.apiKey}&steamid=${id64}`
     )
 
     if (response.status !== 200) return { gameCount: 0, games }

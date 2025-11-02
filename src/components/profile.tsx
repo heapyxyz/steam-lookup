@@ -293,7 +293,7 @@ function ProfileBody({
 
         {gameCount > 0 && (
           <div>
-            <p className="text-foreground">Games Owned</p>
+            <p className="text-foreground">Paid Games</p>
             <p className="select-text">{gameCount}</p>
           </div>
         )}
