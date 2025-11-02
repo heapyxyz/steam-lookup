@@ -176,7 +176,10 @@ class SteamClient {
       gameBans: bans.gameBans,
       daysSinceLastBan: bans.daysSinceLastBan,
       gameCount: games.gameCount,
-      playtime: games.games.reduce((acc, game) => acc + game.playtime, 0),
+      playtime: games.games.reduce((total, game) => total + game.playtime, 0),
+      csPlaytime: games.games
+        .filter((game) => game.appId === 730)
+        .reduce((total, game) => total + game.playtime, 0),
       faceitUrl: faceitPlayer?.url ?? null,
       faceitLevel: faceitPlayer?.level ?? null,
       faceitElo: faceitPlayer?.elo ?? null,
@@ -307,7 +310,7 @@ class SteamClient {
     for (const game of data.games) {
       games.push({
         appId: game.appid,
-        playtime: game.playtime_forever,
+        playtime: Math.round((game.playtime_forever * 10) / 60) / 10,
       })
     }
 

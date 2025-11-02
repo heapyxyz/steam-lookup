@@ -63,6 +63,7 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
               timeCreated={profile.timeCreated}
               gameCount={profile.gameCount}
               playtime={profile.playtime}
+              csPlaytime={profile.csPlaytime}
             />
 
             <ProfileSteamIds steamId={new SteamID(profile.steamId)} />
@@ -266,11 +267,13 @@ function ProfileBody({
   timeCreated,
   gameCount,
   playtime,
+  csPlaytime,
 }: {
   vanity: string | null
   timeCreated: number | null
   gameCount: number
   playtime: number
+  csPlaytime: number
 }) {
   return (
     (vanity || timeCreated || gameCount > 0 || playtime > 0) && (
@@ -301,9 +304,14 @@ function ProfileBody({
         {playtime > 0 && (
           <div>
             <p className="text-foreground">Playtime</p>
-            <p className="select-text">
-              {Math.round((playtime * 10) / 60) / 10} Hours
-            </p>
+            <p className="select-text">{playtime} Hours</p>
+          </div>
+        )}
+
+        {csPlaytime > 0 && (
+          <div>
+            <p className="text-foreground">CS2 Playtime</p>
+            <p className="select-text">{csPlaytime} Hours</p>
           </div>
         )}
       </div>
