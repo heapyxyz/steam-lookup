@@ -228,8 +228,8 @@ export const FaceitLevelSeven = ({ size = 32 }) => (
     />
 
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M17.934 7.92a7.2 7.2 0 10-10.62 9.546L5.752 19.29A9.58 9.58 0 012.4 12a9.6 9.6 0 0117.512-5.44l-1.978 1.36z"
       fill="#FFC800"
     />
@@ -292,8 +292,8 @@ export const FaceitLevelNine = ({ size = 32 }) => (
     />
 
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M18.517 15.066a7.2 7.2 0 10-11.202 2.4L5.751 19.29A9.58 9.58 0 012.4 12 9.6 9.6 0 0112 2.4a9.6 9.6 0 019.6 9.6 9.563 9.563 0 01-.91 4.089l-2.173-1.023z"
       fill="#FF6309"
     />
