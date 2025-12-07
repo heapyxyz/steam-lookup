@@ -78,7 +78,7 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
           </CardContent>
 
           <CardFooter className="flex-col">
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground text-center">
               SteamLookup © 2025 | Not affiliated with Steam or Valve
             </p>
           </CardFooter>
@@ -282,6 +282,7 @@ function ProfileBody({
       totalPlaytime > 0 ||
       gameCount > 0) && (
       <div className="grid grid-cols-2 grid-center-last gap-y-1 gap-x-4">
+      <div className="flex flex-wrap justify-center gap-y-2 gap-x-4 max-w-xs">
         {vanity && (
           <div>
             <p className="text-foreground">Vanity</p>
