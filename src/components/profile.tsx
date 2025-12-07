@@ -36,7 +36,7 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
       />
 
       <Center className="pt-17">
-        <Card className="max-w-lg w-full bg-transparent border-0 backdrop-blur-2xl backdrop-brightness-50">
+        <Card className="max-w-lg w-full bg-transparent border-0 backdrop-blur-2xl backdrop-brightness-50 gap-4">
           <CardContent className="text-muted-foreground text-sm text-center flex flex-col items-center gap-2">
             <ProfileAvatar
               href={profile.longUrl}
@@ -44,7 +44,7 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
               avatarFrameUrl={profile.avatarFrameUrl}
             />
 
-            <ProfileUser
+            <ProfileName
               username={profile.username}
               level={profile.level}
               faceitLevel={profile.faceitLevel}
@@ -66,15 +66,19 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
               gameCount={profile.gameCount}
             />
 
-            <ProfileSteamIds steamId={new SteamID(profile.steamId)} />
+            <div className="flex flex-wrap items-center justify-center gap-y-2 gap-x-4 max-w-xs">
+              <ProfileSteamIds steamId={new SteamID(profile.steamId)} />
 
-            <ProfileFaceit
-              elo={profile.faceitElo}
-              level={profile.faceitLevel}
-              url={profile.faceitUrl}
+              <ProfileFaceit
+                elo={profile.faceitElo}
+                level={profile.faceitLevel}
+              />
+            </div>
+
+            <ProfileButtons
+              steamId={profile.steamId}
+              faceitUrl={profile.faceitUrl}
             />
-
-            <ProfileButtons steamId={profile.steamId} />
           </CardContent>
 
           <CardFooter className="flex-col">
@@ -157,7 +161,7 @@ function ProfileAvatar({
   )
 }
 
-function ProfileUser({
+function ProfileName({
   username,
   level,
   faceitLevel,
@@ -281,8 +285,7 @@ function ProfileBody({
       csPlaytime > 0 ||
       totalPlaytime > 0 ||
       gameCount > 0) && (
-      <div className="grid grid-cols-2 grid-center-last gap-y-1 gap-x-4">
-      <div className="flex flex-wrap justify-center gap-y-2 gap-x-4 max-w-xs">
+      <div className="flex flex-wrap items-center justify-center gap-y-2 gap-x-4 max-w-xs">
         {vanity && (
           <div>
             <p className="text-foreground">Vanity</p>
@@ -338,33 +341,41 @@ function ProfileSteamIds({ steamId }: { steamId: SteamID }) {
 function ProfileFaceit({
   level,
   elo,
-  url,
 }: {
   level: number | null
   elo: number | null
-  url: string | null
+}) {
+  return (
+    (level || elo) && (
+      <div className="flex flex-col">
+        {level && (
+          <div>
+            <p className="text-foreground">FACEIT Level</p>
+            <p className="select-text">{level}</p>
+          </div>
+        )}
+
+        {elo && (
+          <div>
+            <p className="text-foreground">FACEIT Elo</p>
+            <p className="select-text">{elo}</p>
+          </div>
+        )}
+      </div>
+    )
+  )
+}
+
+function ProfileButtons({
+  steamId,
+  faceitUrl,
+}: {
+  steamId: string
+  faceitUrl: string | null
 }) {
   return (
     <>
-      {(level || elo) && (
-        <div className="grid grid-cols-2 grid-center-last gap-y-1 gap-x-4">
-          {level && (
-            <div>
-              <p className="text-foreground">FACEIT Level</p>
-              <p className="select-text">{level}</p>
-            </div>
-          )}
-
-          {elo && (
-            <div>
-              <p className="text-foreground">FACEIT Elo</p>
-              <p className="select-text">{elo}</p>
-            </div>
-          )}
-        </div>
-      )}
-
-      {url && (
+      {faceitUrl && (
         <Link
           className={cn(
             buttonVariants({
@@ -373,20 +384,14 @@ function ProfileFaceit({
               size: "sm",
             })
           )}
-          href={url}
+          href={faceitUrl}
           target="_blank"
         >
           <Faceit />
           FACEIT
         </Link>
       )}
-    </>
-  )
-}
 
-function ProfileButtons({ steamId }: { steamId: string }) {
-  return (
-    <>
       <Link
         className={cn(
           buttonVariants({

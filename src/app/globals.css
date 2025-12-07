@@ -211,8 +211,4 @@
       @apply pl-4;
     }
   }
-
-  .grid-center-last > :last-child:nth-child(odd) {
-    @apply col-span-2;
-  }
 }
