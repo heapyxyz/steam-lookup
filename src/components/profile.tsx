@@ -83,7 +83,7 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
 
           <CardFooter className="flex-col">
             <p className="text-xs text-muted-foreground text-center">
-              SteamLookup © 2025 | Not affiliated with Steam or Valve
+              SteamLookup © 2026 | Not affiliated with Steam or Valve
             </p>
           </CardFooter>
         </Card>
