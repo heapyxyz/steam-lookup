@@ -7,7 +7,7 @@ import { Toaster } from "@/components/ui/sonner"
 export const metadata: Metadata = {
   title: {
     default: "SteamLookup - Find Any Steam Profile Instantly",
-    template: "%s - SteamLookup",
+    template: "%s - SteamLookup"
   },
   description:
     "Lookup profiles by Steam IDs, vanities or profile URLs. Now with FACEIT support.",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   publisher: "heapy",
   metadataBase: new URL("https://heapy.xyz"),
   alternates: {
-    canonical: "/",
+    canonical: "/"
   },
   keywords: [
     "steam",
@@ -55,21 +55,21 @@ export const metadata: Metadata = {
     "faceit profile",
     "faceit stats",
     "faceit elo",
-    "faceit level",
+    "faceit level"
   ],
   icons: {
     icon: [
       {
         media: "(prefers-color-scheme: light)",
         url: "/icon-light.png",
-        href: "/icon-light.png",
+        href: "/icon-light.png"
       },
       {
         media: "(prefers-color-scheme: dark)",
         url: "/icon-dark.png",
-        href: "/icon-dark.png",
-      },
-    ],
+        href: "/icon-dark.png"
+      }
+    ]
   },
   openGraph: {
     title: "SteamLookup - Find Any Steam Profile Instantly",
@@ -82,11 +82,11 @@ export const metadata: Metadata = {
         url: "https://heapy.xyz/icon-dark.png",
         width: 512,
         height: 512,
-        alt: "Logo",
-      },
+        alt: "Logo"
+      }
     ],
     locale: "en_US",
-    type: "website",
+    type: "website"
   },
   twitter: {
     card: "summary_large_image",
@@ -96,27 +96,18 @@ export const metadata: Metadata = {
     creator: "@heapyxyz",
     images: {
       url: "https://heapy.xyz/icon-dark.png",
-      alt: "Logo",
-    },
-  },
+      alt: "Logo"
+    }
+  }
 }
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        {process.env.ADSENSE_ID && (
-          <meta
-            name="google-adsense-account"
-            content={process.env.ADSENSE_ID}
-          />
-        )}
-      </head>
-
       <body className="antialiased select-none">
         <Providers>
           <main className="min-h-dvh max-w-5xl container mx-auto p-4 flex flex-col">
@@ -127,9 +118,9 @@ export default function RootLayout({
               toastOptions={{
                 style: {
                   background: "transparent",
-                  border: "none",
+                  border: "none"
                 },
-                className: "backdrop-blur-2xl backdrop-brightness-50",
+                className: "backdrop-blur-2xl backdrop-brightness-50"
               }}
             />
           </main>
