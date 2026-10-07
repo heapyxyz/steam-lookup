@@ -19,7 +19,7 @@ const examples = [
   "[U:1:915301674]",
   "U:1:915301674",
   "heapyxyz",
-  "fjmv-jhdp",
+  "fjmv-jhdp"
 ]
 
 export default function SearchForm() {
@@ -47,7 +47,7 @@ export default function SearchForm() {
           "You have been rate limited or an error has occurred. Please try again later."
         )
       else if (error.message === "NEXT_REDIRECT") setIsRedirecting(true)
-    },
+    }
   })
 
   return (

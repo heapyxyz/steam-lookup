@@ -1,4 +1,4 @@
-import { BackgroundType } from "@prisma/client"
+import { BackgroundType } from "@/generated/prisma/browser"
 import { Metadata } from "next"
 
 import FixedElement from "@/components/fixed-element"
@@ -10,7 +10,7 @@ import { Identifier } from "@/lib/identifier"
 import { InputType } from "@/types"
 
 export async function generateMetadata({
-  params,
+  params
 }: {
   params: Promise<{ id: string }>
 }): Promise<Metadata> {
@@ -20,12 +20,12 @@ export async function generateMetadata({
   if (type !== InputType.Steam64) return {}
 
   return {
-    title: id,
+    title: id
   }
 }
 
 export default async function Profile({
-  params,
+  params
 }: {
   params: Promise<{ id: string }>
 }) {

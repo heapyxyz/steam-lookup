@@ -15,10 +15,7 @@ mkShell {
   ];
 
   shellHook = ''
-    export PRISMA_QUERY_ENGINE_LIBRARY="${prismaEngines}/lib/libquery_engine.node"
-    export PRISMA_QUERY_ENGINE_BINARY="${prismaEngines}/bin/query-engine"
-    export PRISMA_SCHEMA_ENGINE_BINARY="${prismaEngines}/bin/schema-engine"    
-    export PRISMA_FMT_BINARY="${prismaEngines}/bin/prisma-fmt"
+    export PRISMA_SCHEMA_ENGINE_BINARY="${prismaEngines}/bin/schema-engine"
     unset TEMP TMP TEMPDIR TMPDIR
   '';
 }

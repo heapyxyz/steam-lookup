@@ -1,7 +1,7 @@
 import "server-only"
 
 import SteamID from "steamid"
-import { BackgroundType, Profile } from "@prisma/client"
+import { BackgroundType, Profile } from "@/generated/prisma/browser"
 import { getRandom } from "random-useragent"
 
 import { prisma } from "./prisma"
@@ -59,7 +59,7 @@ class SteamClient {
       await prisma.profile.updateMany({
         where: { steamId: id64 },
         limit: 1,
-        data: { shortUrl: input },
+        data: { shortUrl: input }
       })
 
     return id64
@@ -67,14 +67,14 @@ class SteamClient {
 
   private async updateOrCreate(profile: Profile) {
     const existingProfile = await prisma.profile.findUnique({
-      where: { steamId: profile.steamId },
+      where: { steamId: profile.steamId }
     })
 
     let newProfile
     if (existingProfile)
       newProfile = await prisma.profile.update({
         where: { steamId: profile.steamId },
-        data: profile,
+        data: profile
       })
     else newProfile = await prisma.profile.create({ data: profile })
 
@@ -120,7 +120,7 @@ class SteamClient {
     if (type !== InputType.Steam64) return null
 
     const existingProfile = await prisma.profile.findUnique({
-      where: { steamId: id64 },
+      where: { steamId: id64 }
     })
 
     // If profile is already in the db and was last updated within last 30 minutes or is already being fetched, return stored data
@@ -136,7 +136,7 @@ class SteamClient {
       for (let i = 0; i < 10; i++) {
         await new Promise((r) => setTimeout(r, 1000))
         const profile = await prisma.profile.findUnique({
-          where: { steamId: id64 },
+          where: { steamId: id64 }
         })
         if (profile) return profile
       }
@@ -197,7 +197,7 @@ class SteamClient {
       faceitUrl: faceitPlayer?.url ?? null,
       faceitLevel: faceitPlayer?.level ?? null,
       faceitElo: faceitPlayer?.elo ?? null,
-      lastUpdated: new Date(Date.now()),
+      lastUpdated: new Date(Date.now())
     }
 
     if (
@@ -211,7 +211,7 @@ class SteamClient {
   async getBackground(id64: string): Promise<Background> {
     const background: Background = {
       type: BackgroundType.Image,
-      url: "https://steamcommunity-a.akamaihd.net/public/images/profile/2020/bg_dots.png",
+      url: "https://steamcommunity-a.akamaihd.net/public/images/profile/2020/bg_dots.png"
     }
 
     const type = Identifier.identifyInput(id64)
@@ -281,7 +281,7 @@ class SteamClient {
       tradeBanned: false,
       vacBans: 0,
       gameBans: 0,
-      daysSinceLastBan: 0,
+      daysSinceLastBan: 0
     }
 
     const type = Identifier.identifyInput(id64)
@@ -330,7 +330,7 @@ class SteamClient {
     for (const game of data.games) {
       games.push({
         appId: game.appid,
-        playtime: game.playtime_forever,
+        playtime: game.playtime_forever
       })
     }
 
@@ -342,7 +342,7 @@ class SteamClient {
 
     for (let i = 0; i < retries; i++) {
       const response = await fetch(url, {
-        headers: { "user-agent": getRandom() },
+        headers: { "user-agent": getRandom() }
       })
 
       console.log(`SteamClient: ${response.status} ${route}`)
@@ -360,7 +360,7 @@ class SteamClient {
 
     return new Response(null, {
       status: 418,
-      statusText: `Fetch failed after ${retries} retries`,
+      statusText: `Fetch failed after ${retries} retries`
     })
   }
 }

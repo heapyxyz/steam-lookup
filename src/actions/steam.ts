@@ -21,7 +21,7 @@ export const resolveAndRedirect = async (input: string) => {
 
   if (id64 === null)
     return {
-      error: `Profile does not exist or an error has occurred. Please try again later.`,
+      error: `Profile does not exist or an error has occurred. Please try again later.`
     }
 
   const headersList = await headers()
@@ -29,7 +29,7 @@ export const resolveAndRedirect = async (input: string) => {
 
   if (referer && referer.includes(`/profiles/${id64}`))
     return {
-      error: `You are already on this profile.`,
+      error: `You are already on this profile.`
     }
 
   redirect(`/profiles/${id64}`)

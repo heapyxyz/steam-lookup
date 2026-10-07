@@ -27,7 +27,7 @@ class FaceitClient {
     return {
       url: data.faceit_url.replace("{lang}", "en"),
       level: data.games.cs2.skill_level,
-      elo: data.games.cs2.faceit_elo,
+      elo: data.games.cs2.faceit_elo
     }
   }
 
@@ -50,8 +50,8 @@ class FaceitClient {
     const response = await fetch(url, {
       headers: {
         "user-agent": "SteamLookup by @heapyxyz",
-        authorization: `Bearer ${this.apiKey}`,
-      },
+        authorization: `Bearer ${this.apiKey}`
+      }
     })
 
     console.log(`FaceitClient: ${response.status} ${route}`)

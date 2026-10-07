@@ -1,4 +1,4 @@
-import { BackgroundType } from "@prisma/client"
+import { BackgroundType } from "@/generated/prisma/browser"
 import { type as arktype } from "arktype"
 
 export const Input = arktype("0 < string <= 64")
@@ -16,7 +16,7 @@ export enum InputType {
   Steam3NB,
   User,
   Vanity,
-  FaceitUrl,
+  FaceitUrl
 }
 
 export interface Background {

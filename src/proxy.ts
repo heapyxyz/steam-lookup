@@ -13,11 +13,11 @@ export async function proxy(request: NextRequest) {
         sessionLimit: 10,
         ipLimit: 10,
         sessionWindow: 30,
-        ipWindow: 30,
+        ipWindow: 30
       })
     : response
 }
 
 export const config = {
-  matcher: ["/:path*"],
+  matcher: ["/:path*"]
 }

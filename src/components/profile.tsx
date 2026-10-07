@@ -1,4 +1,4 @@
-import { BackgroundType, Profile } from "@prisma/client"
+import { BackgroundType, Profile } from "@/generated/prisma/browser"
 import SteamID from "steamid"
 import Link from "next/link"
 import Image from "next/image"
@@ -22,7 +22,7 @@ import {
   FaceitLevelNine,
   FaceitLevelTen,
   SteamDb,
-  CsStats,
+  CsStats
 } from "./icons"
 
 export default function ProfileCard({ profile }: { profile: Profile | null }) {
@@ -94,7 +94,7 @@ export default function ProfileCard({ profile }: { profile: Profile | null }) {
 
 function ProfileBackground({
   type,
-  url,
+  url
 }: {
   type: BackgroundType
   url: string
@@ -124,7 +124,7 @@ function ProfileBackground({
 function ProfileAvatar({
   href,
   avatarUrl,
-  avatarFrameUrl,
+  avatarFrameUrl
 }: {
   href: string
   avatarUrl: string
@@ -143,6 +143,7 @@ function ProfileAvatar({
           alt="Avatar Frame"
           height={96}
           width={96}
+          loading="eager"
         />
       )}
 
@@ -156,6 +157,7 @@ function ProfileAvatar({
         alt="Avatar"
         height={96}
         width={96}
+        loading="eager"
       />
     </Link>
   )
@@ -164,7 +166,7 @@ function ProfileAvatar({
 function ProfileName({
   username,
   level,
-  faceitLevel,
+  faceitLevel
 }: {
   username: string
   level: number | null
@@ -233,7 +235,7 @@ function ProfileBans({
   tradeBanned,
   vacBans,
   gameBans,
-  daysSinceLastBan,
+  daysSinceLastBan
 }: Bans) {
   return (
     (communityBanned || tradeBanned || vacBans > 0 || gameBans > 0) && (
@@ -271,7 +273,7 @@ function ProfileBody({
   timeCreated,
   csPlaytime,
   totalPlaytime,
-  gameCount,
+  gameCount
 }: {
   vanity: string | null
   timeCreated: number | null
@@ -340,7 +342,7 @@ function ProfileSteamIds({ steamId }: { steamId: SteamID }) {
 
 function ProfileFaceit({
   level,
-  elo,
+  elo
 }: {
   level: number | null
   elo: number | null
@@ -368,7 +370,7 @@ function ProfileFaceit({
 
 function ProfileButtons({
   steamId,
-  faceitUrl,
+  faceitUrl
 }: {
   steamId: string
   faceitUrl: string | null
@@ -381,7 +383,7 @@ function ProfileButtons({
             buttonVariants({
               className:
                 "max-w-[192px] w-full bg-[#FF5500] hover:bg-[#FF5500]/80",
-              size: "sm",
+              size: "sm"
             })
           )}
           href={faceitUrl}
@@ -397,7 +399,7 @@ function ProfileButtons({
           buttonVariants({
             className:
               "max-w-[192px] w-full text-foreground bg-[#173ADE] hover:bg-[#173ADE]/80",
-            size: "sm",
+            size: "sm"
           })
         )}
         href={`https://csstats.gg/player/${steamId}`}
@@ -412,7 +414,7 @@ function ProfileButtons({
           buttonVariants({
             className: "max-w-[192px] w-full",
             variant: "secondary",
-            size: "sm",
+            size: "sm"
           })
         )}
         href={`https://steamdb.info/calculator/${steamId}`}

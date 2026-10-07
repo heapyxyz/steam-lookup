@@ -8,7 +8,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card"
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
         className="fixed top-0 left-0 -z-50 w-full h-dvh bg-center bg-no-repeat bg-cover"
         style={{
           backgroundImage:
-            "url(https://steamcommunity-a.akamaihd.net/public/images/profile/2020/bg_dots.png)",
+            "url(https://steamcommunity-a.akamaihd.net/public/images/profile/2020/bg_dots.png)"
         }}
       />
 
