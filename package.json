@@ -2,11 +2,10 @@
   "name": "steam-lookup",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "prisma:generate": "prisma generate"
+    "lint": "next lint"
   },
   "dependencies": {
     "@daveyplate/next-rate-limit": "^2.0.1",
@@ -37,7 +36,7 @@
     "@types/node": "^25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^10",
+    "eslint": "^9.39.5",
     "eslint-config-next": "16.2.1",
     "prisma": "^6.19.3",
     "tailwindcss": "^4.2.2",
