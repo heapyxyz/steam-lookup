@@ -4,47 +4,34 @@
 
 ## Requriements
 
-- Node.js 20.9 or later (from [Next.js docs](https://nextjs.org/docs/app/getting-started/installation#system-requirements))
+- [Node.js](https://nodejs.org)
+- [pnpm](https://pnpm.io)
 
 ## Usage
 
-1. **Install NodeJS:**
-   - [Windows/macOS](https://nodejs.org/en/download/current)
-   - [Linux](https://nodesource.com/products/distributions)
+1. **Create Environment File:**  
+   Copy `.env.example` file as `.env` and configure it.
 
-2. **Clone and Open the Project:**
-
-   ```bash
-   git clone https://github.com/heapyxyz/steam-lookup
-   cd steam-lookup
-   ```
-
-3. **Create Environment File:**  
-   Rename `.env.example` to `.env` and configure it.
-
-4. **Install Dependencies:**
+2. **Install Dependencies:**
 
    ```bash
-   npm i
+   pnpm i
    ```
 
-5. **Prepare the Project:**
+3. **Prepare the Project:**
 
    ```bash
    # Push the schema to the database
-   npx prisma db push
+   pnpm prisma db push
 
    # Generate the database client using the schema
-   npx prisma generate
+   pnpm prisma generate
 
    # Build the project
-   npm run build
+   pnpm run build
    ```
 
-6. **Start the Project:**
+4. **Start the Project:**
    ```bash
-   npm run start
+   pnpm run start
    ```
-
-> [!NOTE]
-> If you want to use a different IP or port, head to the `package.json` file and add `-H <IP> -p <PORT>` arguments to the `next start` command.
