@@ -4,59 +4,16 @@ import "./globals.css"
 import Providers from "@/app/providers"
 import { Toaster } from "@/components/ui/sonner"
 
+const TITLE = "SteamLookup"
+const DESCRIPTION =
+  "Lookup profiles by Steam IDs, vanities or profile URLs. Now with FACEIT support."
+
 export const metadata: Metadata = {
   title: {
-    default: "SteamLookup - Find Any Steam Profile Instantly",
+    default: TITLE,
     template: "%s - SteamLookup"
   },
-  description:
-    "Lookup profiles by Steam IDs, vanities or profile URLs. Now with FACEIT support.",
-  generator: "Next.js",
-  applicationName: "SteamLookup",
-  authors: [{ name: "heapy", url: "https://heapy.xyz" }],
-  creator: "heapy",
-  publisher: "heapy",
-  metadataBase: new URL("https://heapy.xyz"),
-  alternates: {
-    canonical: "/"
-  },
-  keywords: [
-    "steam",
-    "steamlookup",
-    "steam lookup",
-    "steam api",
-    "steam profile",
-    "steam profiles",
-    "steam account",
-    "steam accounts",
-    "steam user",
-    "steam users",
-    "steam community",
-    "steam profile analysis",
-    "steam profile viewer",
-    "steam profile checker",
-    "steam profile lookup",
-    "steam id",
-    "steam id lookup",
-    "steam 64 id",
-    "steam 64 id lookup",
-    "steam profile stats",
-    "steam profile information",
-    "steam profile data",
-    "steam profile insights",
-    "steam profile finder",
-    "steam id finder",
-    "steam account lookup",
-    "find steam id",
-    "steam profile search",
-    "faceit",
-    "faceit lookup",
-    "faceit finder",
-    "faceit profile",
-    "faceit stats",
-    "faceit elo",
-    "faceit level"
-  ],
+  description: DESCRIPTION,
   icons: {
     icon: [
       {
@@ -72,11 +29,10 @@ export const metadata: Metadata = {
     ]
   },
   openGraph: {
-    title: "SteamLookup - Find Any Steam Profile Instantly",
-    description:
-      "Lookup profiles by Steam IDs, vanities or profile URLs. Now with FACEIT support.",
+    title: TITLE,
+    description: DESCRIPTION,
     url: "https://heapy.xyz",
-    siteName: "SteamLookup",
+    siteName: TITLE,
     images: [
       {
         url: "https://heapy.xyz/icon-dark.png",
@@ -90,9 +46,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "SteamLookup - Find Any Steam Profile Instantly",
-    description:
-      "Lookup profiles by Steam IDs, vanities or profile URLs. Now with FACEIT support.",
+    title: TITLE,
+    description: DESCRIPTION,
     creator: "@heapyxyz",
     images: {
       url: "https://heapy.xyz/icon-dark.png",
