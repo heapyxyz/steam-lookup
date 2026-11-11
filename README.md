@@ -9,16 +9,16 @@
 
 ## Usage
 
-1. **Create Environment File:**  
+1. **Create environment file:**  
    Copy `.env.example` file as `.env` and configure it.
 
-2. **Install Dependencies:**
+2. **Install dependencies:**
 
    ```bash
    pnpm i
    ```
 
-3. **Prepare the Project:**
+3. **Prepare the project:**
 
    ```bash
    # Push the schema to the database
@@ -31,7 +31,7 @@
    pnpm run build
    ```
 
-4. **Start the Project:**
+4. **Start the project:**
    ```bash
    pnpm run start
    ```
